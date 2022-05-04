@@ -9,6 +9,9 @@ use App\Models\PasswordReset;
 use App\Notifications\PasswordResetRequest;
 use Illuminate\Support\Str;
 use App\Http\Controllers\OTPVerificationController;
+use App\Mail\SecondEmailVerifyMailManager;
+use App\Utility\SmsUtility;
+use Mail;
 
 use Hash;
 
@@ -34,8 +37,14 @@ class PasswordResetController extends Controller
             $user->save();
             if ($request->send_code_by == 'phone') {
 
-                $otpController = new OTPVerificationController();
-                $otpController->send_code($user);
+                $array['view'] = 'emails.verification';
+                $array['from'] = env('MAIL_FROM_ADDRESS');
+                $array['subject'] = translate('Email Verification');
+                $array['content'] = translate('Verification Code is ').$user->verification_code;
+
+                Mail::to($user->email)->queue(new SecondEmailVerifyMailManager($array));
+                // $otpController = new OTPVerificationController();
+                // $otpController->send_code($user);
             } else {
                 $user->notify(new AppEmailVerificationNotification());
             }
@@ -89,8 +98,15 @@ class PasswordResetController extends Controller
         if ($request->verify_by == 'email') {
             $user->notify(new AppEmailVerificationNotification());
         } else {
-            $otpController = new OTPVerificationController();
-            $otpController->send_code($user);
+            
+            $array['view'] = 'emails.verification';
+            $array['from'] = env('MAIL_FROM_ADDRESS');
+            $array['subject'] = translate('Email Verification');
+            $array['content'] = translate('Verification Code is ').$user->verification_code;
+
+            Mail::to($user->email)->queue(new SecondEmailVerifyMailManager($array));
+            // $otpController = new OTPVerificationController();
+            // $otpController->send_code($user);
         }
 
 
