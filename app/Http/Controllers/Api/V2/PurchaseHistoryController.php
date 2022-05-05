@@ -46,4 +46,24 @@ class PurchaseHistoryController extends Controller
         $order_query = OrderDetail::with('product')->where('order_id', $order_id->id);
         return new PurchaseHistoryItemsCollection($order_query->get());
     }
+    
+    public function order_cancel($id)
+    {
+        $order = Order::where('id', $id)->where('user_id', auth()->user()->id)->first();
+        if($order && ($order->delivery_status == 'pending' && $order->payment_status == 'unpaid')) {
+            $order->delivery_status = 'cancelled';
+            $order->save();
+
+            return response()->json([
+                'result' => true,
+                'message' => translate('Order has been canceled successfully')
+            ]);
+        } else {            
+            return response()->json([
+                'result' => false,
+                'message' => translate('Something went wrong')
+            ]);
+        }
+
+    }
 }
