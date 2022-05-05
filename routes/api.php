@@ -138,6 +138,8 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function() {
     Route::get('policies/seller', 'App\Http\Controllers\Api\V2\PolicyController@sellerPolicy')->name('policies.seller');
     Route::get('policies/support', 'App\Http\Controllers\Api\V2\PolicyController@supportPolicy')->name('policies.support');
     Route::get('policies/return', 'App\Http\Controllers\Api\V2\PolicyController@returnPolicy')->name('policies.return');
+    Route::get('policies/terms', 'App\Http\Controllers\Api\V2\PolicyController@termsPolicy')->name('policies.terms');
+    Route::get('policies/privacy', 'App\Http\Controllers\Api\V2\PolicyController@privacyPolicy')->name('policies.privacy');
 
     // Route::get('user/info/{id}', 'App\Http\Controllers\Api\V2\UserController@info')->middleware('auth:sanctum');
     // Route::post('user/info/update', 'App\Http\Controllers\Api\V2\UserController@updateName')->middleware('auth:sanctum');
