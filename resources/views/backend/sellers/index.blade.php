@@ -38,6 +38,10 @@
                   <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Type name or email & Enter') }}">
                 </div>
             </div>
+			<input type="hidden" name="roport_id" id="roport_id" value="0">
+					<div class="col-md-2">
+					   <span data-href="" id="export" class="btn btn-primary" onclick="exportTasks(event.target);">Export</span>
+					</div>
         </div>
     
         <div class="card-body">

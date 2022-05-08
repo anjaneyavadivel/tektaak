@@ -20,8 +20,12 @@
                                <option value="0" @if($sort_by == '0') selected @endif>{{ translate('Non Approved') }}</option>
                             </select>
                         </div>
+						<input type="hidden" name="roport_id" id="roport_id" value="0">
                         <div class="col-md-2">
-                            <button class="btn btn-primary" type="submit">{{ translate('Filter') }}</button>
+                            <button class="btn btn-primary" id="btn_target" type="submit">{{ translate('Filter') }}</button>
+                        </div>
+						<div class="col-md-2">
+                           <span data-href="" id="export" class="btn btn-primary" onclick="exportTasks(event.target);">Export</span>
                         </div>
                     </div>
                 </form>
@@ -69,5 +73,11 @@
         </div>
     </div>
 </div>
-
+<script>
+   function exportTasks(_this) {
+	   document.getElementById("roport_id").value = "1";
+	   document.getElementById("btn_target").click();
+	   document.getElementById("roport_id").value = "0";
+   }
+</script>
 @endsection
