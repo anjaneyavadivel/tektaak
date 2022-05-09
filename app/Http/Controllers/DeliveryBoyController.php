@@ -182,7 +182,6 @@ class DeliveryBoyController extends Controller
     
     public function ban($id) {
         $delivery_boy = User::findOrFail($id);
-        
         if($delivery_boy->banned == 1) {
             $delivery_boy->banned = 0;
             flash(translate('Delivery Boy UnBanned Successfully'))->success();

@@ -519,7 +519,6 @@ class OrderController extends Controller
         $order->delivery_viewed = '0';
         $order->delivery_status = $request->status;
         $order->save();
-
         if ($request->status == 'cancelled' && $order->payment_type == 'wallet') {
             $user = User::where('id', $order->user_id)->first();
             $user->balance += $order->grand_total;
@@ -714,7 +713,6 @@ class OrderController extends Controller
             $delivery_history->delivery_boy_id = $request->delivery_boy;
 
             $delivery_history->save();
-
             if (env('MAIL_USERNAME') != null && get_setting('delivery_boy_mail_notification') == '1') {
                 $array['view'] = 'emails.invoice';
                 $array['subject'] = translate('You are assigned to delivery an order. Order code') . ' - ' . $order->code;

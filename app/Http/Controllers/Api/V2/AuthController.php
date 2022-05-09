@@ -137,7 +137,7 @@ class AuthController extends Controller
         ]);*/
 
         $delivery_boy_condition = $request->has('user_type') && $request->user_type == 'delivery_boy';
-
+        
         if ($delivery_boy_condition) {
             $user = User::whereIn('user_type', ['delivery_boy'])->where('email', $request->email)->orWhere('phone', $request->email)->first();
         } else {
