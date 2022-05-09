@@ -31,9 +31,9 @@
                 </div>
             </div>
 			<input type="hidden" name="roport_id" id="roport_id" value="0">
-					<div class="col-md-2">
-					   <span data-href="" id="export" class="btn btn-primary" onclick="exportTasks(event.target);">Export</span>
-					</div>
+			<div class="col-md-2">
+			   <span data-href="" id="export" class="btn btn-primary" onclick="exportTasks(event.target);">Export</span>
+			</div>
         </div>
     
         <div class="card-body">
@@ -205,5 +205,13 @@
                 }
             });
         }
+		
+	function exportTasks(_this) {
+		document.getElementById("roport_id").value = "1";
+		//document.getElementById("btn_target").click();
+		$("#sort_customers").submit();
+		document.getElementById("roport_id").value = "0";
+	}
+		
     </script>
 @endsection

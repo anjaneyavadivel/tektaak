@@ -28,7 +28,7 @@
             
             <div class="col-md-3 ml-auto">
                 <select class="form-control aiz-selectpicker" name="approved_status" id="approved_status" onchange="sort_sellers()">
-                    <option value="">{{translate('Filter by Approval')}}</option>
+                    <option value="3">{{translate('Filter by Approval')}}</option>
                     <option value="1"  @isset($approved) @if($approved == 'paid') selected @endif @endisset>{{translate('Approved')}}</option>
                     <option value="0"  @isset($approved) @if($approved == 'unpaid') selected @endif @endisset>{{translate('Non-Approved')}}</option>
                 </select>
@@ -221,6 +221,12 @@
 
 @section('script')
     <script type="text/javascript">
+	function exportTasks(_this) {
+	   document.getElementById("roport_id").value = "1";
+	   //document.getElementById("btn_target").click();
+	   $("#sort_sellers").submit();
+	   document.getElementById("roport_id").value = "0";
+   }
         $(document).on("change", ".check-all", function() {
             if(this.checked) {
                 // Iterate each checkbox

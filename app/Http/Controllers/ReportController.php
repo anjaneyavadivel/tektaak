@@ -113,7 +113,7 @@ class ReportController extends Controller
         $sellers = User::where('user_type', 'seller')->orderBy('created_at', 'desc');
         if ($request->has('verification_status')){
             $sort_by = $request->verification_status;
-            $sellers = $sellers->where('verification_status', $sort_by);
+            $sellers = $sellers->where('id', $sort_by);
         }
         $sellers = $sellers->paginate(10);
 		

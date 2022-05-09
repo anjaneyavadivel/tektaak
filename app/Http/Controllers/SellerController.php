@@ -43,7 +43,42 @@ class SellerController extends Controller
             $shops = $shops->where('verification_status', $approved);
         }
         $shops = $shops->paginate(15);
-        return view('backend.sellers.index', compact('shops', 'sort_search', 'approved'));
+		//Export CSV
+		$roport_id = $request->input('roport_id') ?? '';
+		if ($roport_id==1){
+            $fileName = 'Seller.csv';
+			$headers = array(
+            "Content-type"        => "text/csv",
+            "Content-Disposition" => "attachment; filename=$fileName",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"             => "0"
+			);
+        $columns = array('#', 'Name', 'Phone', 'Email Address', 'Verification Info', 'Approval', 'Num. of Products', 'Due to seller');
+
+        $callback = function() use($shops, $columns) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $columns);
+
+            foreach ($shops as $key => $shop) {
+                $row['#']  = ($key+1);
+                $row['Name']    = $shop->name;
+                $row['Phone']    = $shop->user->phone;
+                $row['Email Address']    = $shop->user->email;
+                $row['Verification Info']    = $shop->verification_info;
+                $row['Approval']    = '1';
+                $row['Num. of Products']    = $shop->user->products->count();
+                $row['Due to seller']    = $wallet_status;
+                fputcsv($file, array($row['#'], $row['Name'], $row['Phone'], $row['Email Address'], $row['Verification Info'], $row['Approval'], $row['Num. of Products	'], $row['Due to seller']));
+            }
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+        }
+		//End Export csv
+		
+        return view('backend.sellers.index', compact('shops', 'sort_search', 'approved', 'roport_id'));
     }
 
     /**
