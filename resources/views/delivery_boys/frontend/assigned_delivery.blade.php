@@ -63,9 +63,9 @@
                                     <a href="javascript:void(0)" class="btn btn-soft-danger btn-icon btn-circle btn-sm" onclick="confirm_cancel_request('{{route('cancel-request', $delivery->id)}}')" title="{{ translate('Cancel') }}">
                                         <i class="las la-times"></i>
                                     </a>
-                                    <a href="javascript:void(0)" class="btn btn-soft-info btn-icon btn-circle btn-sm" onclick="show_purchase_history_details({{ $delivery->id }})" title="{{ translate('Order Details') }}">
+                                    {{-- <a href="javascript:void(0)" class="btn btn-soft-info btn-icon btn-circle btn-sm" onclick="show_purchase_history_details({{ $delivery->id }})" title="{{ translate('Order Details') }}">
                                         <i class="las la-eye"></i>
-                                    </a>
+                                    </a> --}}
                                     <a class="btn btn-soft-warning btn-icon btn-circle btn-sm" href="{{ route('invoice.download', $delivery->id) }}" title="{{ translate('Download Invoice') }}">
                                         <i class="las la-download"></i>
                                     </a>

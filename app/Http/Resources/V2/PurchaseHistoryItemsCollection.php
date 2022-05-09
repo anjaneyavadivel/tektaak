@@ -46,6 +46,7 @@ class PurchaseHistoryItemsCollection extends ResourceCollection
                     'id' => $data->id,
                     'product_id' => $data->product->id,
                     'product_name' => $data->product->name,
+                    'thumbnail_image' => uploaded_asset($data->product->thumbnail_img),
                     'variation' => $data->variation,
                     'price' => format_price($data->price),
                     'tax' => format_price($data->tax),

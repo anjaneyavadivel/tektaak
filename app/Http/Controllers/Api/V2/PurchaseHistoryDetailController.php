@@ -9,6 +9,6 @@ class PurchaseHistoryDetailController extends Controller
 {
     public function index($id)
     {
-        return new PurchaseHistoryDetailCollection(OrderDetail::where('order_id', $id)->get());
+        return new PurchaseHistoryDetailCollection(OrderDetail::with('product')->where('order_id', $id)->get());
     }
 }
