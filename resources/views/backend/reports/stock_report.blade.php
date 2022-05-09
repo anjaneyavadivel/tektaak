@@ -17,13 +17,18 @@
                         <label class="col-md-3 col-form-label">{{translate('Sort by Category')}} :</label>
                         <div class="col-md-5">
                             <select id="demo-ease" class="from-control aiz-selectpicker" name="category_id" required>
+							<option value="0">All</option>
                                 @foreach (\App\Models\Category::all() as $key => $category)
                                     <option value="{{ $category->id }}">{{ $category->getTranslation('name') }}</option>
                                 @endforeach
                             </select>
                         </div>
+						<input type="hidden" name="roport_id" id="roport_id" value="0">
                         <div class="col-md-2">
-                            <button class="btn btn-primary" type="submit">{{ translate('Filter') }}</button>
+                            <button class="btn btn-primary" id="btn_target" type="submit">{{ translate('Filter') }}</button>
+                        </div>
+						<div class="col-md-2">
+                           <span data-href="" id="export" class="btn btn-primary" onclick="exportTasks(event.target);">Export</span>
                         </div>
                     </div>
                 </form>
@@ -56,5 +61,11 @@
         </div>
     </div>
 </div>
-
+<script>
+   function exportTasks(_this) {
+	   document.getElementById("roport_id").value = "1";
+	   document.getElementById("btn_target").click();
+	   document.getElementById("roport_id").value = "0";
+   }
+</script>
 @endsection
