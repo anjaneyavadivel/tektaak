@@ -16,7 +16,7 @@ class CustomerController extends Controller
      */
     public function index(Request $request)
     {
-        $sort_search = null;
+        $sort_search = $request->input('search') ?? '';
         $users = User::where('user_type', 'customer')->where('email_verified_at', '!=', null)->orderBy('created_at', 'desc');
         if ($request->has('search')){
             $sort_search = $request->search;
@@ -25,6 +25,38 @@ class CustomerController extends Controller
             });
         }
         $users = $users->paginate(15);
+		//Export CSV
+		$roport_id = $request->input('roport_id') ?? '';
+		if ($roport_id==1){
+            $fileName = 'Seller.csv';
+			$headers = array(
+            "Content-type"        => "text/csv",
+            "Content-Disposition" => "attachment; filename=$fileName",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"             => "0"
+			);
+        $columns = array('#', 'Name', 'Phone', 'Email Address', 'Package', 'Wallet Balance');
+
+        $callback = function() use($users, $columns) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $columns);
+
+            foreach ($users as $key => $user) {
+                $row['#']  = ($key+1);
+                $row['Name']    = $user->name;
+                $row['Phone']    = $user->phone;
+                $row['Email Address']    = $user->email;
+                $row['Package']    = $user->customer_package->getTranslation('name');
+                $row['Wallet Balance']    = single_price($user->balance);
+                fputcsv($file, array($row['#'], $row['Name'], $row['Phone'], $row['Email Address'], $row['Package'], $row['Wallet Balance']));
+            }
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+        }
+		//End Export csv
         return view('backend.customer.customers.index', compact('users', 'sort_search'));
     }
 

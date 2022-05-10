@@ -110,10 +110,16 @@ class ReportController extends Controller
     public function seller_sale_report(Request $request)
     {
         $sort_by =null;
-        $sellers = User::where('user_type', 'seller')->orderBy('created_at', 'desc');
+        //$sellers = User::where('user_type', 'seller')->orderBy('created_at', 'desc');
+		$sellers = User::select('users.*')
+					->join('sellers', function ($join) {
+					$join->on('users.id', '=', 'sellers.user_id');
+				});
+//->get();
+			//dd($sellers);
         if ($request->has('verification_status')){
             $sort_by = $request->verification_status;
-            $sellers = $sellers->where('id', $sort_by);
+            $sellers = $sellers->where('sellers.verification_status', $sort_by);
         }
         $sellers = $sellers->paginate(10);
 		

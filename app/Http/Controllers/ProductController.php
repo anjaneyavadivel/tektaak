@@ -10,6 +10,7 @@ use App\Models\Category;
 use App\Models\ProductTax;
 use App\Models\AttributeValue;
 use App\Models\Cart;
+use App\Models\User;
 use Carbon\Carbon;
 use Combinations;
 use CoreComponentRepository;
@@ -158,8 +159,8 @@ class ProductController extends Controller
             ->where('digital', 0)
             ->with('childrenCategories')
             ->get();
-
-        return view('backend.product.products.create', compact('categories'));
+		$user = User::whereIn('user_type', ['seller', 'admin'])->get();
+        return view('backend.product.products.create', compact('categories','user'));
     }
 
     public function add_more_choice_option(Request $request)
@@ -249,7 +250,8 @@ class ProductController extends Controller
             ->where('digital', 0)
             ->with('childrenCategories')
             ->get();
-        return view('backend.product.products.edit', compact('product', 'categories', 'tags', 'lang'));
+		$user = User::whereIn('user_type', ['seller', 'admin'])->get();
+        return view('backend.product.products.edit', compact('product', 'categories', 'tags', 'lang', 'user'));
     }
 
     /**

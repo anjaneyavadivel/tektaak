@@ -43,6 +43,16 @@
                                 </select>
                             </div>
                         </div>
+						<div class="form-group row" id="category">
+                            <label class="col-md-3 col-from-label">{{translate('Choose Admin / Seller')}}</label>
+                            <div class="col-md-8">
+                                <select class="form-control aiz-selectpicker" name="user_id" id="user_id" data-live-search="true">
+                                    @foreach ($user as $users)
+                                    <option value="{{ $users->id }}" @if($product->user_id == $users->id) selected @endif >{{ $users->name}}({{ $users->user_type}})</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-group row" id="brand">
                             <label class="col-lg-3 col-from-label">{{translate('Brand')}}</label>
                             <div class="col-lg-8">
