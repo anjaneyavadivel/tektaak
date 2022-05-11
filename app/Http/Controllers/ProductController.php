@@ -154,13 +154,13 @@ class ProductController extends Controller
     public function create()
     {
         CoreComponentRepository::initializeCache();
-
-        $categories = Category::where('parent_id', 0)
+		$user_id = auth()->user()->id;
+		$categories = Category::where('parent_id', 0)
             ->where('digital', 0)
             ->with('childrenCategories')
             ->get();
 		$user = User::whereIn('user_type', ['seller', 'admin'])->get();
-        return view('backend.product.products.create', compact('categories','user'));
+        return view('backend.product.products.create', compact('categories','user','user_id'));
     }
 
     public function add_more_choice_option(Request $request)

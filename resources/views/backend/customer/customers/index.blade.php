@@ -15,7 +15,10 @@
             <div class="col">
                 <h5 class="mb-0 h6">{{translate('Customers')}}</h5>
             </div>
-            
+            <input type="hidden" name="roport_id" id="roport_id" value="0">
+			<div class="col-md-2">
+			   <span data-href="" id="export" class="btn btn-primary" onclick="exportTasks(event.target);">Export</span>
+			</div>
             <div class="dropdown mb-2 mb-md-0">
                 <button class="btn border dropdown-toggle" type="button" data-toggle="dropdown">
                     {{translate('Bulk Action')}}
@@ -30,10 +33,7 @@
                     <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Type email or name & Enter') }}">
                 </div>
             </div>
-			<input type="hidden" name="roport_id" id="roport_id" value="0">
-			<div class="col-md-2">
-			   <span data-href="" id="export" class="btn btn-primary" onclick="exportTasks(event.target);">Export</span>
-			</div>
+			
         </div>
     
         <div class="card-body">

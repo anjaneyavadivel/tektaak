@@ -39,7 +39,7 @@
                             <div class="col-md-8">
                                 <select class="form-control aiz-selectpicker" name="user_id" id="user_id" data-live-search="true">
                                     @foreach ($user as $users)
-                                    <option value="{{ $users->id }}">{{ $users->name}}({{ $users->user_type}})</option>
+                                    <option value="{{ $users->id }}" @if($users->id==$user_id) selected @endif >{{ $users->name}} ({{ $users->user_type}})</option>
                                     @endforeach
                                 </select>
                             </div>
