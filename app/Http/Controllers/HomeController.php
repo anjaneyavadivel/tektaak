@@ -244,6 +244,7 @@ class HomeController extends Controller
                 $affiliateController = new AffiliateController;
                 $affiliateController->processAffiliateStats($referred_by_user->id, 1, 0, 0, 0);
             }
+           
             if($detailedProduct->digital == 1){
                 return view('frontend.digital_product_details', compact('detailedProduct'));
             }
