@@ -139,6 +139,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
         Route::post('/sellers/payment_modal', 'payment_modal')->name('sellers.payment_modal');
         Route::post('/sellers/profile_modal', 'profile_modal')->name('sellers.profile_modal');
         Route::post('/sellers/approved', 'updateApproved')->name('sellers.approved');
+        Route::get('/sellers/profile/{id}', 'profile')->name('sellers.profile');
     });
 
     // Seller Payment

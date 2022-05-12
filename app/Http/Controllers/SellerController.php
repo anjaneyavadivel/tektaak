@@ -12,6 +12,7 @@ use App\Models\OrderDetail;
 use Illuminate\Support\Facades\Hash;
 use App\Notifications\EmailVerificationNotification;
 use Cache;
+use Auth;
 
 class SellerController extends Controller
 {
@@ -155,6 +156,15 @@ class SellerController extends Controller
     {
         $shop = Shop::findOrFail(decrypt($id));
         return view('backend.sellers.edit', compact('shop'));
+    } 
+	public function profile($id)
+    {
+		//$decrypt_id=(decrypt($id));
+       // $user = User::findOrFail($decrypt_id);
+		//dd($user);
+        $user = Auth::user();
+        $addresses = $user->addresses; 
+		return view('backend.profile.admin-side-profile', compact('user','addresses'));
     }
 
     /**

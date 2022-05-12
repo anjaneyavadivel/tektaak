@@ -42,7 +42,8 @@
                 </div>
             </div>
 			<div class="col-md-2">
-					   <span data-href="" id="" class="btn btn-primary">Add</span>
+						<a class="btn btn-primary" href="{{route('sellers.create')}}"> {{translate('Add')}} </a>
+					   
 					</div>
         </div>
     
@@ -126,7 +127,10 @@
                                         {{translate('Payment History')}}
                                     </a>
                                     <a href="{{route('sellers.edit', encrypt($shop->id))}}" class="dropdown-item">
-                                        {{translate('Edit')}}
+                                        {{translate('Edit Login Info')}}
+                                    </a> 
+									<a href="{{route('sellers.profile', encrypt($shop->user_id))}}" class="dropdown-item">
+                                        {{translate('Edit Profile')}}
                                     </a>
                                     @if($shop->user->banned != 1)
                                         <a href="#" onclick="confirm_ban('{{route('sellers.ban', $shop->id)}}');" class="dropdown-item">

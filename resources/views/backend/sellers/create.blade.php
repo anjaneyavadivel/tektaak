@@ -23,7 +23,7 @@
                 <div class="form-group row">
                     <label class="col-sm-3 col-from-label" for="email">{{translate('Email Address')}}</label>
                     <div class="col-sm-9">
-                        <input type="text" placeholder="{{translate('Email Address')}}" id="email" name="email" class="form-control" required>
+                        <input type="email" placeholder="{{translate('Email Address')}}" id="email" name="email" class="form-control" required>
                     </div>
                 </div>
                 <div class="form-group row">
