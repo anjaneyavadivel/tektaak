@@ -58,6 +58,7 @@
     <link rel="stylesheet" href="{{ static_asset('assets/css/aiz-core.css') }}">
     <link rel="stylesheet" href="{{ static_asset('assets/css/custom-style.css') }}">
 
+    @yield('stylesheet')
 
     <script>
         var AIZ = AIZ || {};
@@ -513,6 +514,7 @@
     @php
         echo get_setting('footer_script');
     @endphp
+    @yield('javascript')
 
 </body>
 </html>
