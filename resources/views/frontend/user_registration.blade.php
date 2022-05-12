@@ -1,5 +1,18 @@
 @extends('frontend.layouts.app')
 
+@section('script')
+<link rel="stylesheet" href="{{ static_asset('assets/font-awesome-4.7.0/css/font-awesome.min.css') }}">
+<style>
+    .field-icon {
+  float: right;
+  margin-left: -25px;
+  margin-top: 14px;
+  position: relative;
+  z-index: 2;
+}
+
+</style>
+@endsection
 @section('content')
     <section class="gry-bg py-4">
         <div class="profile">
@@ -56,8 +69,12 @@
                                         @endif
 
                                         <div class="form-group">
-                                            <input type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{  translate('Password') }}" name="password">
-                                            @if ($errors->has('password'))
+                                            <div class="input-group">
+                                            <input type="password" id="password-field" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{  translate('Password') }}" name="password">
+                                              <span toggle="#password-field" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
+                                        </div>
+                                                                                    
+                                             @if ($errors->has('password'))
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $errors->first('password') }}</strong>
                                                 </span>
@@ -65,7 +82,10 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <input type="password" class="form-control" placeholder="{{  translate('Confirm Password') }}" name="password_confirmation">
+                                            <div class="input-group">
+                                            <input type="password" id="password-cfield" class="form-control" placeholder="{{  translate('Confirm Password') }}" name="password_confirmation">
+                                            <span toggle="#password-cfield" class="fa fa-fw fa-eye-slash field-icon toggle-password1"></span>
+                                        </div>
                                         </div>
 
                                         @if(get_setting('google_recaptcha') == 1)
@@ -136,6 +156,7 @@
     @endif
 
     <script type="text/javascript">
+  
 
         @if(get_setting('google_recaptcha') == 1)
         // making the CAPTCHA  a required field for form submission
@@ -208,3 +229,30 @@
         }
     </script>
 @endsection
+
+@section('javascript')
+    <script type="text/javascript">
+
+$(".toggle-password").click(function() {
+
+$(this).toggleClass("fa-eye-slash fa-eye");
+var input = $($(this).attr("toggle"));
+if (input.attr("type") == "password") {
+input.attr("type", "text");
+} else {
+input.attr("type", "password");
+}
+});
+$(".toggle-password1").click(function() {
+
+$(this).toggleClass("fa-eye-slash fa-eye");
+var input = $($(this).attr("toggle"));
+if (input.attr("type") == "password") {
+input.attr("type", "text");
+} else {
+input.attr("type", "password");
+}
+});
+</script>
+@endsection
+
