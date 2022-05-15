@@ -31,7 +31,7 @@
             
             <div class="col-md-3 ml-auto">
                 <select class="form-control aiz-selectpicker" name="approved_status" id="approved_status" onchange="sort_sellers()">
-                    <option value="3">{{translate('Filter by Approval')}}</option>
+                    <option value="">{{translate('All')}}</option>
                     <option value="1"  @isset($approved) @if($approved == 'paid') selected @endif @endisset>{{translate('Approved')}}</option>
                     <option value="0"  @isset($approved) @if($approved == 'unpaid') selected @endif @endisset>{{translate('Non-Approved')}}</option>
                 </select>
@@ -43,10 +43,8 @@
             </div>
 			<div class="col-md-2">
 						<a class="btn btn-primary" href="{{route('sellers.create')}}"> {{translate('Add')}} </a>
-					   
 					</div>
         </div>
-    
         <div class="card-body">
             <table class="table aiz-table mb-0">
                 <thead>
@@ -84,7 +82,7 @@
                                 </div>
                             </div>
                         </td>
-                        <td>@if($shop->user->banned == 1) <i class="fa fa-ban text-danger" aria-hidden="true"></i> @endif {{$shop->name}}</td>
+                        <td>@if($shop->user->banned == 1) <i class="fa fa-ban text-danger" aria-hidden="true"></i> @endif {{$shop->user->name}}</td>
                         <td>{{$shop->user->phone}}</td>
                         <td>{{$shop->user->email}}</td>
                         <td>

@@ -29,7 +29,7 @@ class SellerController extends Controller
                        $query->select('id')
                        ->from(with(new User)->getTable());
                     })->latest();
-
+		//dd($shops);
         if ($request->has('search')) {
             $sort_search = $request->search;
             $user_ids = User::where('user_type', 'seller')->where(function ($user) use ($sort_search) {
@@ -39,15 +39,17 @@ class SellerController extends Controller
                 $shops->whereIn('user_id', $user_ids);
             });
         }
-        if ($request->approved_status != null) {
+        if ($request->has('approved_status')) {
             $approved = $request->approved_status;
             $shops = $shops->where('verification_status', $approved);
         }
         $shops = $shops->paginate(15);
+		//dd($shops);
 		//Export CSV
 		$roport_id = $request->input('roport_id') ?? '';
-		if ($roport_id==1){
-            $fileName = 'Seller.csv';
+		//dd($roport_id);
+		if($roport_id=='1'){
+			$fileName = 'Seller.csv';
 			$headers = array(
             "Content-type"        => "text/csv",
             "Content-Disposition" => "attachment; filename=$fileName",
@@ -63,20 +65,21 @@ class SellerController extends Controller
 
             foreach ($shops as $key => $shop) {
                 $row['#']  = ($key+1);
-                $row['Name']    = $shop->name;
+                $row['Name']    = $shop->user->name;
                 $row['Phone']    = $shop->user->phone;
                 $row['Email Address']    = $shop->user->email;
                 $row['Verification Info']    = $shop->verification_info;
                 $row['Approval']    = '1';
                 $row['Num. of Products']    = $shop->user->products->count();
-                $row['Due to seller']    = $wallet_status;
+                $row['Due to seller']    = "dfs";
                 fputcsv($file, array($row['#'], $row['Name'], $row['Phone'], $row['Email Address'], $row['Verification Info'], $row['Approval'], $row['Num. of Products	'], $row['Due to seller']));
             }
             fclose($file);
         };
-
-        return response()->stream($callback, 200, $headers);
-        }
+		
+		//return view('backend.sellers.index', compact('shops', 'sort_search', 'approved', 'roport_id'));
+       return response()->stream($callback, 200, $headers);
+       }
 		//End Export csv
 		
         return view('backend.sellers.index', compact('shops', 'sort_search', 'approved', 'roport_id'));
@@ -100,6 +103,7 @@ class SellerController extends Controller
      */
     public function store(Request $request)
     {
+		dd("sds"); exit;
         if (User::where('email', $request->email)->first() != null) {
             flash(translate('Email already exists!'))->error();
             return back();
@@ -157,16 +161,63 @@ class SellerController extends Controller
         $shop = Shop::findOrFail(decrypt($id));
         return view('backend.sellers.edit', compact('shop'));
     } 
-	public function profile($id)
+	public function profile($decrypt_id)
     {
-		//$decrypt_id=(decrypt($id));
-       // $user = User::findOrFail($decrypt_id);
-		//dd($user);
-        $user = Auth::user();
-        $addresses = $user->addresses; 
+		$id=(decrypt($decrypt_id));
+		$user = User::findOrFail($id);
+		$addresses = $user->addresses; 
 		return view('backend.profile.admin-side-profile', compact('user','addresses'));
     }
+	/* public function update_profile($decrypt_id)
+    {
+		
+		$id=(decrypt($decrypt_id));
+       // $user = User::findOrFail($decrypt_id);
+		//dd($user);
+		$user = User::findOrFail($id);
+		//dd($shop);
+        //$user = Auth::user();
+        $addresses = $user->addresses; 
+		return view('backend.profile.admin-side-profile', compact('user','addresses'));
+    } */
+	public function update_profile(Request $request , $id)
+    {
+		
+        if(env('DEMO_MODE') == 'On'){
+            flash(translate('Sorry! the action is not permitted in demo '))->error();
+            return back();
+        }
 
+        $user = User::findOrFail($id);
+        $user->name = $request->name;
+        $user->phone = $request->phone;
+
+        if($request->new_password != null && ($request->new_password == $request->confirm_password)){
+            $user->password = Hash::make($request->new_password);
+        }
+        
+        $user->avatar_original = $request->photo;
+
+        $shop = $user->shop;
+
+        if($shop){
+            $shop->cash_on_delivery_status = $request->cash_on_delivery_status;
+            $shop->bank_payment_status = $request->bank_payment_status;
+            $shop->bank_name = $request->bank_name;
+            $shop->bank_acc_name = $request->bank_acc_name;
+            $shop->bank_acc_no = $request->bank_acc_no;
+            $shop->bank_routing_no = $request->bank_routing_no;
+
+            $shop->save();
+        }
+
+        $user->save();
+
+        flash(translate('Your Profile has been updated successfully!'))->success();
+        return back();
+    }
+	
+	
     /**
      * Update the specified resource in storage.
      *

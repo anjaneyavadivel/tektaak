@@ -8,7 +8,7 @@
         </div>
       </div>
     </div>
-    <form action="{{ route('seller.profile.update', $user->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('sellers.profileupdate', $user->id) }}" method="POST" enctype="multipart/form-data">
         <input name="_method" type="hidden" value="POST">
         @csrf
         <!-- Basic Info-->
@@ -143,7 +143,7 @@
     <br>
 
     <!-- Address -->
-    <div class="card">
+   <?php  /* <div class="card">
         <div class="card-header">
             <h5 class="mb-0 h6">{{ translate('Address')}}</h5>
         </div>
@@ -203,10 +203,10 @@
                         <i class="la la-plus la-2x"></i>
                         <div class="alpha-7">{{ translate('Add New Address') }}</div>
                     </div>
-                </div>
+                </div> 
             </div>
         </div>
-    </div>
+    </div> */ ?>
 
     <!-- Change Email -->
     <form action="{{ route('user.change.email') }}" method="POST">
