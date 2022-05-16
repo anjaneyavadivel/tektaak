@@ -1,5 +1,6 @@
 @extends('backend.layouts.app')
 
+
 @section('content')
 
 <div class="aiz-titlebar text-left mt-2 mb-3">
@@ -17,7 +18,7 @@
                 <h5 class="mb-md-0 h6">{{ translate('Sellers') }}</h5>
             </div>
             <input type="hidden" name="roport_id" id="roport_id" value="0">
-					<div class="col-md-2">
+					<div class="mr-2">
 					   <span data-href="" id="export" class="btn btn-primary" onclick="exportTasks(event.target);">Export</span>
 					</div>
             <div class="dropdown mb-2 mb-md-0">

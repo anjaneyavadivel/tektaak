@@ -28,7 +28,7 @@ class CustomerController extends Controller
 		//Export CSV
 		$roport_id = $request->input('roport_id') ?? '';
 		if ($roport_id==1){
-            $fileName = 'Seller.csv';
+            $fileName = 'Customers.csv';
 			$headers = array(
             "Content-type"        => "text/csv",
             "Content-Disposition" => "attachment; filename=$fileName",
@@ -44,11 +44,11 @@ class CustomerController extends Controller
 
             foreach ($users as $key => $user) {
                 $row['#']  = ($key+1);
-                $row['Name']    = $user->name;
-                $row['Phone']    = $user->phone;
-                $row['Email Address']    = $user->email;
-                $row['Package']    = $user->customer_package->getTranslation('name');
-                $row['Wallet Balance']    = single_price($user->balance);
+                $row['Name']    = $user->name ?? '-';
+                $row['Phone']    = $user->email ?? '-';
+                $row['Email Address']    = $user->phone ?? '-';
+                $row['Package']    = $user->customer_package ?? '-';
+                $row['Wallet Balance']    = single_price($user->balance) ?? '-';
                 fputcsv($file, array($row['#'], $row['Name'], $row['Phone'], $row['Email Address'], $row['Package'], $row['Wallet Balance']));
             }
             fclose($file);

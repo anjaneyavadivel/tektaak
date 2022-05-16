@@ -273,8 +273,8 @@ class ProductController extends Controller
             ->where('digital', 0)
             ->with('childrenCategories')
             ->get();
-
-        return view('backend.product.products.edit', compact('product', 'categories', 'tags', 'lang'));
+		$user = User::whereIn('user_type', ['seller', 'admin'])->get();
+        return view('backend.product.products.edit', compact('product', 'categories', 'tags', 'lang','user'));
     }
 
     /**

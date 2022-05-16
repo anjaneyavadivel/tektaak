@@ -25,12 +25,14 @@ class SellerController extends Controller
     {
         $sort_search = null;
         $approved = null;
-        $shops = Shop::whereIn('user_id', function ($query) {
+		$sort_search = $request->search;
+		$approved = $request->approved_status;
+		$shops = Shop::whereIn('user_id', function ($query) {
                        $query->select('id')
                        ->from(with(new User)->getTable());
                     })->latest();
-		//dd($shops);
-        if ($request->has('search')) {
+		
+         if(!empty($sort_search)) {
             $sort_search = $request->search;
             $user_ids = User::where('user_type', 'seller')->where(function ($user) use ($sort_search) {
                 $user->where('name', 'like', '%' . $sort_search . '%')->orWhere('email', 'like', '%' . $sort_search . '%');
@@ -39,17 +41,15 @@ class SellerController extends Controller
                 $shops->whereIn('user_id', $user_ids);
             });
         }
-        if ($request->has('approved_status')) {
+        if(!empty($approved)) {
             $approved = $request->approved_status;
             $shops = $shops->where('verification_status', $approved);
         }
         $shops = $shops->paginate(15);
-		//dd($shops);
 		//Export CSV
 		$roport_id = $request->input('roport_id') ?? '';
-		//dd($roport_id);
-		if($roport_id=='1'){
-			$fileName = 'Seller.csv';
+		if ($roport_id==1){
+            $fileName = 'Product.csv';
 			$headers = array(
             "Content-type"        => "text/csv",
             "Content-Disposition" => "attachment; filename=$fileName",
@@ -57,7 +57,7 @@ class SellerController extends Controller
             "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
             "Expires"             => "0"
 			);
-        $columns = array('#', 'Name', 'Phone', 'Email Address', 'Verification Info', 'Approval', 'Num. of Products', 'Due to seller');
+        $columns = array('#', 'Name', 'Phone', 'Email Address', 'Num. of Products', 'Due to seller');
 
         $callback = function() use($shops, $columns) {
             $file = fopen('php://output', 'w');
@@ -65,24 +65,19 @@ class SellerController extends Controller
 
             foreach ($shops as $key => $shop) {
                 $row['#']  = ($key+1);
-                $row['Name']    = $shop->user->name;
+                $row['Name']    = $shop->user->name ?? '-';
                 $row['Phone']    = $shop->user->phone;
                 $row['Email Address']    = $shop->user->email;
-                $row['Verification Info']    = $shop->verification_info;
-                $row['Approval']    = '1';
                 $row['Num. of Products']    = $shop->user->products->count();
-                $row['Due to seller']    = "dfs";
-                fputcsv($file, array($row['#'], $row['Name'], $row['Phone'], $row['Email Address'], $row['Verification Info'], $row['Approval'], $row['Num. of Products	'], $row['Due to seller']));
+                $row['Due to seller']    = single_price($shop->admin_to_pay);
+                fputcsv($file, array($row['#'], $row['Name'], $row['Phone'], $row['Email Address'], $row['Num. of Products'], $row['Due to seller']));
             }
             fclose($file);
         };
-		
-		//return view('backend.sellers.index', compact('shops', 'sort_search', 'approved', 'roport_id'));
-       return response()->stream($callback, 200, $headers);
-       }
-		//End Export csv
-		
-        return view('backend.sellers.index', compact('shops', 'sort_search', 'approved', 'roport_id'));
+
+        return response()->stream($callback, 200, $headers);
+        }
+	    return view('backend.sellers.index', compact('shops', 'sort_search', 'approved', 'roport_id'));
     }
 
     /**
