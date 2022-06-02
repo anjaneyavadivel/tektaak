@@ -37,12 +37,18 @@
                                 <button type="submit" class="btn btn-primary">{{ translate('Track Order')}}</button>
                             </div>
                         </div>
+                        @if(!isset($order) && $order_code != '')
+                        <div class="alert alert-danger" role="alert">
+                            Sorry! Invalid tracking code
+                          </div>
+                          @endif
                     </div>
                 </form>
             </div>
         </div>
 
-        @isset($order)
+       
+        @if(isset($order))
             <div class="bg-white rounded shadow-sm mt-5">
                 <div class="fs-15 fw-600 p-3 border-bottom">
                     {{ translate('Order Summary')}}
@@ -135,7 +141,7 @@
                 </div>
             @endforeach
 
-        @endisset
+        @endif
     </div>
 </section>
 

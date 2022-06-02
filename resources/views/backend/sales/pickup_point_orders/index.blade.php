@@ -29,14 +29,14 @@
         <table class="table aiz-table mb-0">
             <thead>
                 <tr>
-                    <th data-breakpoints="lg">#</th>
+                    <th data-breakpoints="md">#</th>
                     <th>{{translate('Order Code')}}</th>
-                    <th data-breakpoints="lg">{{translate('Num. of Products')}}</th>
-                    <th data-breakpoints="lg">{{translate('Customer')}}</th>
-                    <th data-breakpoints="lg">{{translate('Amount')}}</th>
-                    <th data-breakpoints="lg">{{translate('Delivery Status')}}</th>
-                    <th data-breakpoints="lg">{{translate('Payment Method')}}</th>
-                    <th data-breakpoints="lg">{{translate('Payment Status')}}</th>
+                    <th data-breakpoints="md">{{translate('Num. of Products')}}</th>
+                    <th data-breakpoints="md">{{translate('Customer')}}</th>
+                    <th data-breakpoints="md">{{translate('Amount')}}</th>
+                    <th data-breakpoints="md">{{translate('Delivery Status')}}</th>
+                    <th data-breakpoints="md">{{translate('Payment Method')}}</th>
+                    <th data-breakpoints="md">{{translate('Payment Status')}}</th>
                     <th class="text-right" width="15%">{{translate('Options')}}</th>
                 </tr>
             </thead>

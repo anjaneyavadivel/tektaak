@@ -17,7 +17,11 @@ class ReviewController extends Controller
      */
     public function index(Request $request)
     {
-        $reviews = Review::orderBy('created_at', 'desc')->paginate(15);
+        if($request->has('rating')){
+            $reviews = Review::orderBy('rating', $request->rating)->paginate(15);
+        }else{
+            $reviews = Review::orderBy('created_at', 'desc')->paginate(15);
+        }
         return view('backend.product.reviews.index', compact('reviews'));
     }
 

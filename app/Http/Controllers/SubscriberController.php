@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Subscriber;
+use App\Mail\EmailManager;
+use Mail;
 
 class SubscriberController extends Controller
 {
@@ -41,6 +43,16 @@ class SubscriberController extends Controller
             $subscriber = new Subscriber;
             $subscriber->email = $request->email;
             $subscriber->save();
+
+            $array['view'] = 'emails.newsletter';
+            $array['subject'] = "Thank you for subscribed - Tektaak";
+            $array['from'] = env('MAIL_FROM_ADDRESS');
+            $array['content'] = "You have subscribed successfully.";
+            try {
+                Mail::to($request->email)->queue(new EmailManager($array));
+            } catch (\Exception $e) {
+               dd($e);
+            }
             flash(translate('You have subscribed successfully'))->success();
         }
         else{

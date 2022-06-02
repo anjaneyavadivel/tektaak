@@ -20,8 +20,8 @@
                     <div class="" style="min-width: 200px;">
                         <select class="form-control aiz-selectpicker" name="rating" id="rating" onchange="filter_by_rating()">
                             <option value="">{{translate('Filter by Rating')}}</option>
-                            <option value="rating,desc">{{translate('Rating (High > Low)')}}</option>
-                            <option value="rating,asc">{{translate('Rating (Low > High)')}}</option>
+                            <option value="desc">{{translate('Rating (High > Low)')}}</option>
+                            <option value="asc">{{translate('Rating (Low > High)')}}</option>
                         </select>
                     </div>
                 </form>

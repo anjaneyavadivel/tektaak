@@ -21,7 +21,7 @@ use App\Services\ProductService;
 use App\Services\ProductTaxService;
 use App\Services\ProductFlashDealService;
 use App\Services\ProductStockService;
-
+use Illuminate\Support\Facades\DB;
 class ProductController extends Controller
 {
     protected $productService;
@@ -114,11 +114,12 @@ class ProductController extends Controller
 
     public function all_products(Request $request)
     {
-        $col_name = null;
-        $query = null;
+        $col_name = 'created_at';
+        $query = 'desc';
         $seller_id = null;
         $sort_search = null;
-        $products = Product::orderBy('created_at', 'desc')->where('auction_product', 0)->where('wholesale_product', 0);
+       // DB::enableQueryLog();
+        $products = Product::where('auction_product', 0)->where('wholesale_product', 0);
         if ($request->has('user_id') && $request->user_id != null) {
             $products = $products->where('user_id', $request->user_id);
             $seller_id = $request->user_id;
@@ -135,11 +136,12 @@ class ProductController extends Controller
             $var = explode(",", $request->type);
             $col_name = $var[0];
             $query = $var[1];
-            $products = $products->orderBy($col_name, $query);
             $sort_type = $request->type;
         }
+        $products = $products->orderBy($col_name, $query);
 
         $products = $products->paginate(15);
+      // dd(DB::getQueryLog());
         $type = 'All';
 
         return view('backend.product.products.index', compact('products', 'type', 'col_name', 'query', 'seller_id', 'sort_search'));
