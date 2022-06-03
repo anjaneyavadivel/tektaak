@@ -98,7 +98,6 @@ class SellerController extends Controller
      */
     public function store(Request $request)
     {
-		dd("sds"); exit;
         if (User::where('email', $request->email)->first() != null) {
             flash(translate('Email already exists!'))->error();
             return back();

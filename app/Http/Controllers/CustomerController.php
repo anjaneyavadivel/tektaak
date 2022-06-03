@@ -45,8 +45,8 @@ class CustomerController extends Controller
             foreach ($users as $key => $user) {
                 $row['#']  = ($key+1);
                 $row['Name']    = $user->name ?? '-';
-                $row['Phone']    = $user->email ?? '-';
-                $row['Email Address']    = $user->phone ?? '-';
+                $row['Phone']    = $user->phone ?? '-';
+                $row['Email Address']    = $user->email ?? '-';
                 $row['Package']    = $user->customer_package ?? '-';
                 $row['Wallet Balance']    = single_price($user->balance) ?? '-';
                 fputcsv($file, array($row['#'], $row['Name'], $row['Phone'], $row['Email Address'], $row['Package'], $row['Wallet Balance']));

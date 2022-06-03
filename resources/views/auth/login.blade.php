@@ -29,7 +29,8 @@
                             </div>
                             <div class="form-group">
                                 <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required placeholder="{{ translate('Password') }}">
-                                @if ($errors->has('password'))
+                               <div style="text-align: end;"> <span onclick="myFunction()"> <i id="show_hide"  class="lar la-eye-slash"></i> </span><div>
+								@if ($errors->has('password'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('password') }}</strong>
                                     </span>
@@ -86,5 +87,17 @@
             $('#email').val('admin@example.com');
             $('#password').val('123456');
         }
+function myFunction() {
+  var x = document.getElementById("password");
+  if (x.type === "password") {
+    x.type = "text";
+	$("#show_hide").addClass("lar la-eye-slash")
+	$("#show_hide").removeClass("las la-eye")
+  } else {
+    x.type = "password";
+	$("#show_hide").removeClass("las la-eye")
+	$("#show_hide").addClass("lar la-eye-slash")
+  }
+} 
     </script>
 @endsection
