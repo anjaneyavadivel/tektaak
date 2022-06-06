@@ -98,6 +98,7 @@ class CheckoutController
                     }
                 }
             }
+            
 
 
             Cart::where('user_id', auth()->user()->id)->update([
@@ -112,6 +113,37 @@ class CheckoutController
             ]);
 
         }
+
+        elseif ($coupon->type == 'exclude_product_base') {
+            $coupon_discount = 0;
+            foreach ($cart_items as $key => $cartItem) {
+                foreach ($coupon_details as $key => $coupon_detail) {
+                    if ($coupon_detail->product_id == $cartItem['product_id']) {
+                        if ($coupon->discount_type == 'percent') {
+                            $coupon_discount += $cartItem['price'] * $coupon->discount / 100;
+                        } elseif ($coupon->discount_type == 'amount') {
+                            $coupon_discount += $coupon->discount;
+                        }
+                    }
+                }
+            }
+            
+
+
+            Cart::where('user_id', auth()->user()->id)->update([
+                'discount' => $coupon_discount / count($cart_items),
+                'coupon_code' => $request->coupon_code,
+                'coupon_applied' => 1
+            ]);
+
+            return response()->json([
+                'result' => true,
+                'message' => translate('Coupon Applied')
+            ]);
+
+        }
+
+        
 
 
     }

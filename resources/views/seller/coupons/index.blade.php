@@ -48,6 +48,8 @@
                                     {{ translate('Cart Base') }}
                                 @elseif ($coupon->type == 'product_base')
                                     {{ translate('Product Base') }}
+                                    @elseif ($coupon->type == 'exclude_product_base')
+                                    {{ translate('Exclude Product Base') }}
                             @endif</td>
                             <td>{{ date('d-m-Y', $coupon->start_date) }}</td>
                             <td>{{ date('d-m-Y', $coupon->end_date) }}</td>

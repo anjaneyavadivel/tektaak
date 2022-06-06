@@ -38,10 +38,10 @@ class CouponController extends Controller
      */
     public function store(CouponRequest $request)
     {   
-        $user_id = User::where('user_type', 'admin')->first()->id;
-        Coupon::create($request->validated() + [
+			$user_id = User::where('user_type', 'admin')->first()->id;
+			Coupon::create($request->validated() + [
             'user_id' => $user_id,
-        ]);
+			]);
         flash(translate('Coupon has been saved successfully'))->success();
         return redirect()->route('coupon.index');
     }
@@ -106,6 +106,11 @@ class CouponController extends Controller
         elseif($request->coupon_type == "cart_base"){
             return view('partials.coupons.cart_base_coupon');
         }
+		elseif($request->coupon_type == "exclude_product_base"){
+            $admin_id = \App\Models\User::where('user_type', 'admin')->first()->id;
+            $products = filter_products(\App\Models\Product::where('user_id', $admin_id))->get();
+            return view('partials.coupons.exclude_product_base_coupon', compact('products'));
+        }
     }
 
     public function get_coupon_form_edit(Request $request)
@@ -119,6 +124,11 @@ class CouponController extends Controller
         elseif($request->coupon_type == "cart_base"){
             $coupon = Coupon::findOrFail($request->id);
             return view('partials.coupons.cart_base_coupon_edit',compact('coupon'));
+        }elseif($request->coupon_type == "exclude_product_base") {
+            $coupon = Coupon::findOrFail($request->id);
+            $admin_id = \App\Models\User::where('user_type', 'admin')->first()->id;
+            $products = filter_products(\App\Models\Product::where('user_id', $admin_id))->get();
+            return view('partials.coupons.exclude_product_base_coupon_edit',compact('coupon', 'products'));
         }
     }
 

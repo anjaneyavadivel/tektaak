@@ -11,8 +11,10 @@
                 <strong>{{ translate('Step 1')}}:</strong>
                 <p>1. {{translate('Download the skeleton file and fill it with proper data')}}.</p>
                 <p>2. {{translate('You can download the example file to understand how the data must be filled')}}.</p>
-                <p>3. {{translate('Once you have downloaded and filled the skeleton file, upload it in the form below and submit')}}.</p>
-                <p>4. {{translate('After uploading products you need to edit them and set product\'s images and choices')}}.</p>
+				<p>3. Before fill the skeleton file, Got to "Uploaded files" menu and upload the product image and get url (click image top right icon) and past in skeleton file
+.</p>
+                <p>4. {{translate('Once you have downloaded and filled the skeleton file, upload it in the form below and submit')}}.</p>
+                <p>5. {{translate('After uploading products you need to edit them and set product\'s images and choices')}}.</p>
             </div>
             <br>
             <div class="">

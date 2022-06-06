@@ -234,6 +234,20 @@ class CheckoutController extends Controller
                             }
                         }
                     }
+                    elseif ($coupon->type == 'exclude_product_base') {
+                        $coupon_discount = 0;
+                        foreach ($carts as $key => $cartItem) {
+                            foreach ($coupon_details as $key => $coupon_detail) {
+                                if ($coupon_detail->product_id == $cartItem['product_id']) {
+                                    if ($coupon->discount_type == 'percent') {
+                                        $coupon_discount += ($cartItem['price'] * $coupon->discount / 100) * $cartItem['quantity'];
+                                    } elseif ($coupon->discount_type == 'amount') {
+                                        $coupon_discount += $coupon->discount * $cartItem['quantity'];
+                                    }
+                                }
+                            }
+                        }
+                    }
 
                     if($coupon_discount > 0){
                         Cart::where('user_id', Auth::user()->id)
