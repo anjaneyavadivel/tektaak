@@ -43,6 +43,7 @@ use App\Http\Controllers\Payment\VoguepayController;
 use App\Http\Controllers\Payment\IyzicoController;
 use App\Http\Controllers\Payment\NagadController;
 use App\Http\Controllers\Payment\PaykuController;
+use App\Http\Controllers\Payment\FoloosiController;
 use App\Http\Controllers\ShopController;
 
 
@@ -341,6 +342,11 @@ Route::controller(VoguepayController::class)->group(function () {
     Route::get('/vogue-pay/failure/{id}', 'paymentFailure');
 });
 
+Route::controller(FoloosiController::class)->group(function () {
+    //Route::get('/foloosi', 'pay');
+    Route::get('/foloosi/success/{id}', 'paymentSuccess');
+    Route::get('/foloosi/failure/{id}', 'paymentFailure');
+});
 
 //Iyzico
 Route::any('/iyzico/payment/callback/{payment_type}/{amount?}/{payment_method?}/{combined_order_id?}/{customer_package_id?}/{seller_package_id?}', [IyzicoController::class, 'callback'])->name('iyzico.callback');
