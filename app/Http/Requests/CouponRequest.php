@@ -30,6 +30,9 @@ class CouponRequest extends FormRequest
         if ($this->request->get('type') == 'product_base') {
             $productsRule       = 'required';
         }
+        if ($this->request->get('type') == 'exclude_product_base') {
+            $productsRule       = 'required';
+        }
         if ($this->request->get('type') == 'cart_base') {
             $minBuyRule         = ['required','numeric','min:1'];
             $maxDiscountRule    = ['required','numeric','min:1'];
@@ -94,6 +97,31 @@ class CouponRequest extends FormRequest
             $data['min_buy']          = $this->min_buy;
             $data['max_discount']     = $this->max_discount;
             $coupon_details           = json_encode($data);
+        }elseif ($this->type == "exclude_product_base") {
+           
+            if (auth()->user() != null && (auth()->user()->user_type == 'admin')) {
+                $user_id = \App\Models\User::where('user_type', 'admin')->first()->id;
+            }else{
+                $user_id = Auth::user()->id;
+            }
+            
+            $products = filter_products(\App\Models\Product::where('user_id', $user_id))->get();
+            
+
+            $all_products = array();
+            foreach($products as $product) {
+                array_push($all_products, $product->id);
+            }
+
+            $coupon_details = array();
+            foreach($all_products as $product_id) {
+                if(!in_array($product_id,$this->product_ids))
+                {
+                    $data['product_id'] = $product_id;
+                    array_push($coupon_details, $data);
+                }
+            }
+            $coupon_details = json_encode($coupon_details);
         }
 
         $this->merge([

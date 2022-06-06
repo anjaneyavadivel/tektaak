@@ -26,6 +26,7 @@
                             <option value="">{{translate('Select One') }}</option>
                             <option value="product_base" @if (old('type') == 'product_base') selected @endif>{{translate('For Products')}}</option>
                             <option value="cart_base" @if (old('type') == 'cart_base') selected @endif>{{translate('For Total Orders')}}</option>
+							<option value="exclude_product_base" @if (old('type') == 'exclude_product_base') selected @endif>{{translate('For Exclude Products')}}</option>
                         </select>
                     </div>
                 </div>

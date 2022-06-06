@@ -113,10 +113,10 @@ class CouponController extends Controller
 
     public function get_coupon_form_edit(Request $request)
     {
-        if($request->coupon_type == "product_base") {
+        if($request->coupon_type == "") {
             $coupon = Coupon::findOrFail($request->id);
             $products = filter_products(\App\Models\Product::where('user_id', Auth::user()->id))->get();
-            return view('partials.coupons.product_base_coupon_edit',compact('coupon', 'products'));
+            return view('partials.coupons._coupon_edit',compact('coupon', 'products'));
         }
         elseif($request->coupon_type == "cart_base"){
             $coupon = Coupon::findOrFail($request->id);
