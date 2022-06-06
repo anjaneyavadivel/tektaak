@@ -1,5 +1,10 @@
 @extends('backend.layouts.layout')
 
+@section('stylesheet')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="{{ static_asset('assets/css/custom-style.css') }}">
+@endsection
+
 @section('content')
 
 <div class="h-100 bg-cover bg-center py-5 d-flex align-items-center" style="background-image: url({{ uploaded_asset(get_setting('admin_login_background')) }})">
@@ -27,9 +32,12 @@
                                     </span>
                                 @endif
                             </div>
-                            <div class="form-group">
+                            <div class="form-group input-group"  id="show_hide_password">
                                 <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required placeholder="{{ translate('Password') }}">
-                               <div style="text-align: end;"> <span onclick="myFunction()"> <i id="show_hide"  class="lar la-eye-slash"></i> </span><div>
+                                <div class="input-group-addon">
+                                    <span class="input-group-text" id="basic-addon2"><a><i class="fa fa-eye-slash" aria-hidden="true"></i></a></span>
+                                  </div>
+                                {{-- <div style="text-align: end;"> <span onclick="myFunction()"> <i id="show_hide"  class="lar la-eye-slash"></i> </span><div> --}}
 								@if ($errors->has('password'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('password') }}</strong>
@@ -59,7 +67,7 @@
                             </button>
                         </form>
                         @if (env("DEMO_MODE") == "On")
-                            <div class="mt-4">
+                            {{-- <div class="mt-4">
                                 <table class="table table-bordered">
                                     <tbody>
                                         <tr>
@@ -69,7 +77,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div>
+                            </div> --}}
                         @endif
                     </div>
                 </div>
@@ -83,21 +91,36 @@
 
 @section('script')
     <script type="text/javascript">
+    $(document).ready(function() {
+    $("#show_hide_password a").on('click', function(event) {
+        event.preventDefault();
+        if($('#show_hide_password input').attr("type") == "text"){
+            $('#show_hide_password input').attr('type', 'password');
+            $('#show_hide_password i').addClass( "fa-eye-slash" );
+            $('#show_hide_password i').removeClass( "fa-eye" );
+        }else if($('#show_hide_password input').attr("type") == "password"){
+            $('#show_hide_password input').attr('type', 'text');
+            $('#show_hide_password i').removeClass( "fa-eye-slash" );
+            $('#show_hide_password i').addClass( "fa-eye" );
+        }
+    });
+});
+
         function autoFill(){
             $('#email').val('admin@example.com');
             $('#password').val('123456');
         }
-function myFunction() {
-  var x = document.getElementById("password");
-  if (x.type === "password") {
-    x.type = "text";
-	$("#show_hide").addClass("lar la-eye-slash")
-	$("#show_hide").removeClass("las la-eye")
-  } else {
-    x.type = "password";
-	$("#show_hide").removeClass("las la-eye")
-	$("#show_hide").addClass("lar la-eye-slash")
-  }
-} 
+// function myFunction() {
+//   var x = document.getElementById("password");
+//   if (x.type === "password") {
+//     x.type = "text";
+// 	$("#show_hide").addClass("lar la-eye-slash")
+// 	$("#show_hide").removeClass("las la-eye")
+//   } else {
+//     x.type = "password";
+// 	$("#show_hide").removeClass("las la-eye")
+// 	$("#show_hide").addClass("lar la-eye-slash")
+//   }
+// } 
     </script>
 @endsection

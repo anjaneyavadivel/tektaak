@@ -57,6 +57,7 @@ class CheckoutController extends Controller
                 }
                 else {
                     $combined_order = CombinedOrder::findOrFail($request->session()->get('combined_order_id'));
+                   
                     foreach ($combined_order->orders as $order) {
                         $order->manual_payment = 1;
                         $order->save();

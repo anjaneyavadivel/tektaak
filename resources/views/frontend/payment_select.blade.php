@@ -334,6 +334,19 @@
                                                 </label>
                                             </div>
                                         @endif
+                                        @if(get_setting('foloosi') == 1)
+                                            <div class="col-6 col-md-4">
+                                                <label class="aiz-megabox d-block mb-3">
+                                                    <input value="foloosi" class="online_payment" type="radio" name="payment_option" checked>
+                                                    <span class="d-block p-3 aiz-megabox-elem">
+                                                        <img src="{{ static_asset('assets/img/cards/foloosi_logo.png')}}" class="img-fluid mb-2">
+                                                        <span class="d-block text-center">
+                                                            <span class="d-block fw-600 fs-15">{{ translate('FoloosiPay')}}</span>
+                                                        </span>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        @endif
                                         @if(get_setting('cash_payment') == 1)
                                             @php
                                                 $digital = 0;

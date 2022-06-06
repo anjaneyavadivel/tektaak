@@ -1,1 +1,9 @@
 /*your custom css goes here*/
+
+.input-group-text{
+    padding: 0.6rem 1rem;
+    font-size: 0.875rem;
+    height: calc(1.3125rem + 1.2rem + 2px);
+    border: 1px solid #e2e5ec;
+    color: #898b92;
+}

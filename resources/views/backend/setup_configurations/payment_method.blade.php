@@ -784,6 +784,55 @@
                 </div>
             </div>
         </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0 h6">{{translate('Foloosi Credential')}}</h5>
+                </div>
+                <div class="card-body">
+                    <form class="form-horizontal" action="{{ route('payment_method.update') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="payment_method" value="foloosi">
+                        <div class="form-group row">
+                            <input type="hidden" name="types[]" value="FOLOOSI_MERCHANT_KEY">
+                            <div class="col-lg-4">
+                                <label class="col-from-label">{{translate('FOLOOSI_MERCHANT_KEY')}}</label>
+                            </div>
+                            <div class="col-lg-8">
+                                <input type="text" class="form-control" name="FOLOOSI_MERCHANT_KEY" value="{{  env('FOLOOSI_MERCHANT_KEY') }}" placeholder="{{ translate('FOLOOSI MERCHANT KEY') }}" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <input type="hidden" name="types[]" value="FOLOOSI_SECRET">
+                            <div class="col-lg-4">
+                                <label class="col-from-label">{{translate('FOLOOSI_SECRET')}}</label>
+                            </div>
+                            <div class="col-lg-8">
+                                <input type="text" class="form-control" name="FOLOOSI_SECRET" value="{{  env('FOLOOSI_SECRET') }}" placeholder="{{ translate('FOLOOSI SECRET') }}" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-4">
+                                <label class="col-from-label">{{translate('Foloosi Sandbox Mode')}}</label>
+                            </div>
+                            <div class="col-md-8">
+                                <label class="aiz-switch aiz-switch-success mb-0">
+                                    <input value="1" name="foloosi_sandbox" type="checkbox" @if (get_setting('foloosi_sandbox') == 1)
+                                        checked
+                                    @endif>
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-0 text-right">
+                            <button type="submit" class="btn btn-sm btn-primary">{{translate('Save')}}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
     </div>
 

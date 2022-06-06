@@ -156,6 +156,9 @@
                                       @if (get_setting('payku') == 1)
                                           <option value="payku">{{ translate('Payku')}}</option>
                                       @endif
+                                      @if (get_setting('foloosi') == 1)
+                                          <option value="foloosi">{{ translate('Foloosi')}}</option>
+                                      @endif
                                       @if(addon_is_activated('african_pg'))
                                           @if (get_setting('mpesa') == 1)
                                               <option value="mpesa">{{ translate('Mpesa')}}</option>
