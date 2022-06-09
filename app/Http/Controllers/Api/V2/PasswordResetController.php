@@ -29,7 +29,7 @@ class PasswordResetController extends Controller
         if (!$user) {
             return response()->json([
                 'result' => false,
-                'message' => translate('User is not found')], 404);
+                'message' => translate('User is not found')], 200);
         }
 
         if ($user) {
@@ -71,7 +71,7 @@ class PasswordResetController extends Controller
         } else {
             return response()->json([
                 'result' => false,
-                'message' => translate('No user is found'),
+                'message' => translate('Wrong code'),
             ], 200);
         }
     }
@@ -89,7 +89,7 @@ class PasswordResetController extends Controller
         if (!$user) {
             return response()->json([
                 'result' => false,
-                'message' => translate('User is not found')], 404);
+                'message' => translate('User is not found')], 200);
         }
 
         $user->verification_code = rand(100000, 999999);

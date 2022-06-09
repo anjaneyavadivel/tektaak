@@ -187,6 +187,23 @@ class PaymentTypesController
                 $payment_types[] = $payment_type;
             }
 
+            
+            if (get_setting('foloosi') == 1) {
+                $payment_type = array();
+                $payment_type['payment_type'] = 'foloosi';
+                $payment_type['payment_type_key'] = 'foloosi';
+                $payment_type['image'] = static_asset('assets/img/cards/foloosi_logo.png');
+                $payment_type['name'] = "Foloosi";
+                $payment_type['title'] = "Checkout with Foloosi";
+                $payment_type['offline_payment_id'] = 0;
+                $payment_type['details'] = "";
+                if ($mode == 'wallet') {
+                    $payment_type['title'] = "Recharge with Foloosi";
+                }
+
+                $payment_types[] = $payment_type;
+            }
+
         }
 
 
