@@ -68,7 +68,7 @@ class SearchController extends Controller
         }
 
         if ($min_price != null && $max_price != null) {
-            $products->where('unit_price', '>=', $min_price)->where('unit_price', '<=', $max_price);
+            $products->where('purchase_price', '>=', $min_price)->where('purchase_price', '<=', $max_price);
         }
 
         if ($query != null) {

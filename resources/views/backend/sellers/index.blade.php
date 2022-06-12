@@ -42,8 +42,8 @@
                   <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Type name or email & Enter') }}">
                 </div>
             </div>
-			<div class="col-md-2">
-						<a class="btn btn-primary" href="{{route('sellers.create')}}"> {{translate('Add')}} </a>
+			<div class="col-md-2 text-right">
+						<a class="btn btn-info" href="{{route('sellers.create')}}"> {{translate('Add Seller')}} </a>
 					</div>
         </div>
         <div class="card-body">

@@ -134,6 +134,22 @@
 @section('script')
     <script type="text/javascript">
         function add_new_address(){
+            // Try HTML5 geolocation.
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          initialize(position.coords.latitude, position.coords.longitude, '');
+        },
+        () => {
+          handleLocationError(true, infoWindow, map.getCenter());
+        }
+      );
+    } else {
+      // Browser doesn't support Geolocation
+      handleLocationError(false, infoWindow, map.getCenter());
+    }
+
+           
             $('#new-address-modal').modal('show');
         }
 

@@ -170,20 +170,20 @@ class ProductController extends Controller
         }
 
         if ($min != null && $min != "" && is_numeric($min)) {
-            $products->where('unit_price', '>=', $min);
+            $products->where('purchase_price', '>=', $min);
         }
 
         if ($max != null && $max != "" && is_numeric($max)) {
-            $products->where('unit_price', '<=', $max);
+            $products->where('purchase_price', '<=', $max);
         }
 
         switch ($sort_by) {
             case 'price_low_to_high':
-                $products->orderBy('unit_price', 'asc');
+                $products->orderBy('purchase_price', 'asc');
                 break;
 
             case 'price_high_to_low':
-                $products->orderBy('unit_price', 'desc');
+                $products->orderBy('purchase_price', 'desc');
                 break;
 
             case 'new_arrival':

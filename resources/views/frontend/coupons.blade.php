@@ -90,16 +90,16 @@
                                             <div class="fs-20 mb-3 fw-700 text-truncate">{{ $name }}</div>
                                             <span class="h5 text-center d-block m-auto bg-soft-info p-3 rounded">
                                                 @if($coupon->discount_type == 'amount')
-                                                    {{ translate('Min Spend ') }} {{ single_price($order_discount->min_buy) }} {{ translate('from') }} {{ $name }} {{ translate('to get') }} {{ single_price($coupon->discount) }} {{ translate('OFF on total orders') }}
+                                                    {{ translate('Min Spend ') }} {{ single_price($order_discount->min_buy??0) }} {{ translate('from') }} {{ $name }} {{ translate('to get') }} {{ single_price($coupon->discount) }} {{ translate('OFF on total orders') }}
                                                 @else 
-                                                    {{ translate('Min Spend ') }} {{ single_price($order_discount->min_buy) }} {{ translate('from') }} {{ $name }} {{ translate('to get') }} {{ $coupon->discount }}% {{ translate('OFF on total orders') }}                                   
+                                                    {{ translate('Min Spend ') }} {{ single_price($order_discount->min_buy??0) }} {{ translate('from') }} {{ $name }} {{ translate('to get') }} {{ $coupon->discount }}% {{ translate('OFF on total orders') }}                                   
                                                 @endif
                                             </span>
                                         </div>
                                     </div>
                                     <div class="col-md-4 bg-primary d-flex">
                                         <div class="align-self-center p-3 flex-grow-1 text-center">
-                                            <p class="fs-20 fw-700 mb-1">{{ translate('Max Discount') }}: {{ single_price($order_discount->max_discount) }}</p>
+                                            <p class="fs-20 fw-700 mb-1">{{ translate('Max Discount') }}: {{ single_price($order_discount->max_discount??0) }}</p>
                                             <span class="fs-16 d-block mb-3">
                                                 {{ translate('Code') }}:
                                                 <span class="fw-600">{{ $coupon->code }}</span>

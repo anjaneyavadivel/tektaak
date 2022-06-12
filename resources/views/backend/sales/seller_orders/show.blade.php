@@ -8,12 +8,12 @@
         </div>
 
     	<div class="card-body">
-            <div class="mb-3">
+            {{-- <div class="mb-3">
                 @php
                                 $removedXML = '<?xml version="1.0" encoding="UTF-8"?>';
                             @endphp
                             {!! str_replace($removedXML,"", QrCode::size(100)->generate($order->code)) !!}
-            </div>
+            </div> --}}
             <div class="row gutters-5">
                 <div class="col text-center text-md-left">
                     <address>

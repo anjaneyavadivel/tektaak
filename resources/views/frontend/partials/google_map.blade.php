@@ -1,5 +1,10 @@
 <script>
     function initialize(lat=-33.8688, long=151.2195, id_format='') {
+        
+        document.getElementById(id_format + 'latitude').value = lat;
+            document.getElementById(id_format + 'longitude').value = long;
+
+
         var map = new google.maps.Map(document.getElementById(id_format + 'map'), {
                         center: {lat: lat, lng: long},
                         zoom: 13

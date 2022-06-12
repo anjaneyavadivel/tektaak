@@ -141,9 +141,7 @@ class AuthController extends Controller
         if ($delivery_boy_condition) {
             $user = User::whereIn('user_type', ['delivery_boy'])->where('email', $request->email)->orWhere('phone', $request->email)->first();
             
-            if ($user->banned) {
-                    return response()->json(['result' => false, 'message' => 'Sorry, Your account banned. Please contact admin', 'user' => null], 401);
-            }
+           
         } else {
             $user = User::whereIn('user_type', ['customer', 'seller'])->where('email', $request->email)->orWhere('phone', $request->email)->first();
         }
@@ -153,7 +151,9 @@ class AuthController extends Controller
                 return response()->json(['result' => false, 'message' => 'Identity matrix error', 'user' => null], 401);
             }
         }
-
+        if ($user->banned) {
+                return response()->json(['result' => false, 'message' => 'Sorry, Your account banned. Please contact admin', 'user' => null], 401);
+        }
 
         if ($user != null) {
             if (Hash::check($request->password, $user->password)) {

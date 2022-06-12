@@ -51,6 +51,7 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithValidation, To
                             'video_link' => $row['video_link'],
                             'tags' => $row['tags'],
                             'unit_price' => $row['unit_price'],
+                            'purchase_price' => $row['unit_price'],
                             'unit' => $row['unit'],
                             'meta_title' => $row['meta_title'],
                             'meta_description' => $row['meta_description'],

@@ -8,7 +8,7 @@ Route::group(['prefix' => 'v2/auth', 'middleware' => ['app_language']], function
     Route::post('password/forget_request', 'App\Http\Controllers\Api\V2\PasswordResetController@forgetRequest');
     Route::post('password/confirm_reset', 'App\Http\Controllers\Api\V2\PasswordResetController@confirmReset');
     Route::post('password/resend_code', 'App\Http\Controllers\Api\V2\PasswordResetController@resendCode');
-    Route::middleware('auth:sanctum')->group(function () {
+    Route::middleware(['auth:sanctum', 'unbanned'])->group(function () {
         Route::get('logout', 'App\Http\Controllers\Api\V2\AuthController@logout');
         Route::get('user', 'App\Http\Controllers\Api\V2\AuthController@user');
     });
@@ -16,7 +16,7 @@ Route::group(['prefix' => 'v2/auth', 'middleware' => ['app_language']], function
     Route::post('confirm_code', 'App\Http\Controllers\Api\V2\AuthController@confirmCode');
 });
 
-Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function() {
+Route::group(['prefix' => 'v2', 'middleware' => ['app_language', 'unbanned']], function() {
     Route::prefix('delivery-boy')->group(function () {
         Route::get('dashboard-summary/{id}', 'App\Http\Controllers\Api\V2\DeliveryBoyController@dashboard_summary')->middleware('auth:sanctum');
         Route::get('deliveries/completed/{id}', 'App\Http\Controllers\Api\V2\DeliveryBoyController@completed_delivery')->middleware('auth:sanctum');
@@ -36,19 +36,19 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function() {
     });
 
     Route::prefix('seller')->group(function () {
-        Route::get('orders', 'App\Http\Controllers\Api\V2\SellerController@getOrderList')->middleware('auth:sanctum');;
-        Route::get('orders-details/{id}', 'App\Http\Controllers\Api\V2\SellerController@getOrderDetails')->middleware('auth:sanctum');
+        Route::get('orders', 'App\Http\Controllers\Api\V2\SellerController@getOrderList')->middleware(['auth:sanctum', 'unbanned']);;
+        Route::get('orders-details/{id}', 'App\Http\Controllers\Api\V2\SellerController@getOrderDetails')->middleware(['auth:sanctum', 'unbanned']);
     });
 
 
     Route::get('get-search-suggestions', 'App\Http\Controllers\Api\V2\SearchSuggestionController@getList');
     Route::get('languages', 'App\Http\Controllers\Api\V2\LanguageController@getList');
 
-    Route::get('chat/conversations', 'App\Http\Controllers\Api\V2\ChatController@conversations')->middleware('auth:sanctum');
-    Route::get('chat/messages/{id}', 'App\Http\Controllers\Api\V2\ChatController@messages')->middleware('auth:sanctum');
-    Route::post('chat/insert-message', 'App\Http\Controllers\Api\V2\ChatController@insert_message')->middleware('auth:sanctum');
-    Route::get('chat/get-new-messages/{conversation_id}/{last_message_id}', 'App\Http\Controllers\Api\V2\ChatController@get_new_messages')->middleware('auth:sanctum');
-    Route::post('chat/create-conversation', 'App\Http\Controllers\Api\V2\ChatController@create_conversation')->middleware('auth:sanctum');
+    Route::get('chat/conversations', 'App\Http\Controllers\Api\V2\ChatController@conversations')->middleware(['auth:sanctum', 'unbanned']);
+    Route::get('chat/messages/{id}', 'App\Http\Controllers\Api\V2\ChatController@messages')->middleware(['auth:sanctum', 'unbanned']);
+    Route::post('chat/insert-message', 'App\Http\Controllers\Api\V2\ChatController@insert_message')->middleware(['auth:sanctum', 'unbanned']);
+    Route::get('chat/get-new-messages/{conversation_id}/{last_message_id}', 'App\Http\Controllers\Api\V2\ChatController@get_new_messages')->middleware(['auth:sanctum', 'unbanned']);
+    Route::post('chat/create-conversation', 'App\Http\Controllers\Api\V2\ChatController@create_conversation')->middleware(['auth:sanctum', 'unbanned']);
 
     Route::apiResource('banners', 'App\Http\Controllers\Api\V2\BannerController')->only('index');
 
@@ -73,13 +73,13 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function() {
 
     Route::apiResource('home-categories', 'App\Http\Controllers\Api\V2\HomeCategoryController')->only('index');
 
-    //Route::get('purchase-history/{id}', 'App\Http\Controllers\Api\V2\PurchaseHistoryController@index')->middleware('auth:sanctum');
-    //Route::get('purchase-history-details/{id}', 'App\Http\Controllers\Api\V2\PurchaseHistoryDetailController@index')->name('purchaseHistory.details')->middleware('auth:sanctum');
+    //Route::get('purchase-history/{id}', 'App\Http\Controllers\Api\V2\PurchaseHistoryController@index')->middleware(['auth:sanctum', 'unbanned']);
+    //Route::get('purchase-history-details/{id}', 'App\Http\Controllers\Api\V2\PurchaseHistoryDetailController@index')->name('purchaseHistory.details')->middleware(['auth:sanctum', 'unbanned']);
 
-    Route::get('purchase-history', 'App\Http\Controllers\Api\V2\PurchaseHistoryController@index')->middleware('auth:sanctum');
-    Route::get('purchase-history-details/{id}', 'App\Http\Controllers\Api\V2\PurchaseHistoryController@details')->middleware('auth:sanctum');
-    Route::get('purchase-history-items/{id}', 'App\Http\Controllers\Api\V2\PurchaseHistoryController@items')->middleware('auth:sanctum');
-    Route::get('order-cancel/{id}', 'App\Http\Controllers\Api\V2\PurchaseHistoryController@order_cancel')->middleware('auth:sanctum');
+    Route::get('purchase-history', 'App\Http\Controllers\Api\V2\PurchaseHistoryController@index')->middleware(['auth:sanctum', 'unbanned']);
+    Route::get('purchase-history-details/{id}', 'App\Http\Controllers\Api\V2\PurchaseHistoryController@details')->middleware(['auth:sanctum', 'unbanned']);
+    Route::get('purchase-history-items/{id}', 'App\Http\Controllers\Api\V2\PurchaseHistoryController@items')->middleware(['auth:sanctum', 'unbanned']);
+    Route::get('order-cancel/{id}', 'App\Http\Controllers\Api\V2\PurchaseHistoryController@order_cancel')->middleware(['auth:sanctum', 'unbanned']);
 
     Route::get('filter/categories', 'App\Http\Controllers\Api\V2\FilterController@categories');
     Route::get('filter/brands', 'App\Http\Controllers\Api\V2\FilterController@brands');
@@ -101,25 +101,25 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function() {
     Route::get('products/home', 'App\Http\Controllers\Api\V2\ProductController@home');
     Route::apiResource('products', 'App\Http\Controllers\Api\V2\ProductController')->except(['store', 'update', 'destroy']);
 
-    Route::get('cart-summary', 'App\Http\Controllers\Api\V2\CartController@summary')->middleware('auth:sanctum');
-    Route::post('carts/process', 'App\Http\Controllers\Api\V2\CartController@process')->middleware('auth:sanctum');
-    Route::post('carts/add', 'App\Http\Controllers\Api\V2\CartController@add')->middleware('auth:sanctum');
-    Route::post('carts/change-quantity', 'App\Http\Controllers\Api\V2\CartController@changeQuantity')->middleware('auth:sanctum');
-    Route::apiResource('carts', 'App\Http\Controllers\Api\V2\CartController')->only('destroy')->middleware('auth:sanctum');
-    Route::post('carts', 'App\Http\Controllers\Api\V2\CartController@getList')->middleware('auth:sanctum');
+    Route::get('cart-summary', 'App\Http\Controllers\Api\V2\CartController@summary')->middleware(['auth:sanctum', 'unbanned']);
+    Route::post('carts/process', 'App\Http\Controllers\Api\V2\CartController@process')->middleware(['auth:sanctum', 'unbanned']);
+    Route::post('carts/add', 'App\Http\Controllers\Api\V2\CartController@add')->middleware(['auth:sanctum', 'unbanned']);
+    Route::post('carts/change-quantity', 'App\Http\Controllers\Api\V2\CartController@changeQuantity')->middleware(['auth:sanctum', 'unbanned']);
+    Route::apiResource('carts', 'App\Http\Controllers\Api\V2\CartController')->only('destroy')->middleware(['auth:sanctum', 'unbanned']);
+    Route::post('carts', 'App\Http\Controllers\Api\V2\CartController@getList')->middleware(['auth:sanctum', 'unbanned']);
 
 
-    Route::post('coupon-apply', 'App\Http\Controllers\Api\V2\CheckoutController@apply_coupon_code')->middleware('auth:sanctum');
-    Route::post('coupon-remove', 'App\Http\Controllers\Api\V2\CheckoutController@remove_coupon_code')->middleware('auth:sanctum');
+    Route::post('coupon-apply', 'App\Http\Controllers\Api\V2\CheckoutController@apply_coupon_code')->middleware(['auth:sanctum', 'unbanned']);
+    Route::post('coupon-remove', 'App\Http\Controllers\Api\V2\CheckoutController@remove_coupon_code')->middleware(['auth:sanctum', 'unbanned']);
 
-    Route::post('update-address-in-cart', 'App\Http\Controllers\Api\V2\AddressController@updateAddressInCart')->middleware('auth:sanctum');
+    Route::post('update-address-in-cart', 'App\Http\Controllers\Api\V2\AddressController@updateAddressInCart')->middleware(['auth:sanctum', 'unbanned']);
 
     Route::get('payment-types', 'App\Http\Controllers\Api\V2\PaymentTypesController@getList');
 
     Route::get('reviews/product/{id}', 'App\Http\Controllers\Api\V2\ReviewController@index')->name('api.reviews.index');
-    Route::post('reviews/submit', 'App\Http\Controllers\Api\V2\ReviewController@submit')->name('api.reviews.submit')->middleware('auth:sanctum');
+    Route::post('reviews/submit', 'App\Http\Controllers\Api\V2\ReviewController@submit')->name('api.reviews.submit')->middleware(['auth:sanctum', 'unbanned']);
 
-    Route::get('shop/user/{id}', 'App\Http\Controllers\Api\V2\ShopController@shopOfUser')->middleware('auth:sanctum');
+    Route::get('shop/user/{id}', 'App\Http\Controllers\Api\V2\ShopController@shopOfUser')->middleware(['auth:sanctum', 'unbanned']);
     Route::get('shops/details/{id}', 'App\Http\Controllers\Api\V2\ShopController@info')->name('shops.info');
     Route::get('shops/products/all/{id}', 'App\Http\Controllers\Api\V2\ShopController@allProducts')->name('shops.allProducts');
     Route::get('shops/products/top/{id}', 'App\Http\Controllers\Api\V2\ShopController@topSellingProducts')->name('shops.topSellingProducts');
@@ -130,10 +130,10 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function() {
 
     Route::apiResource('sliders', 'App\Http\Controllers\Api\V2\SliderController')->only('index');
 
-    Route::get('wishlists-check-product', 'App\Http\Controllers\Api\V2\WishlistController@isProductInWishlist')->middleware('auth:sanctum');
-    Route::get('wishlists-add-product', 'App\Http\Controllers\Api\V2\WishlistController@add')->middleware('auth:sanctum');
-    Route::get('wishlists-remove-product', 'App\Http\Controllers\Api\V2\WishlistController@remove')->middleware('auth:sanctum');
-    Route::get('wishlists', 'App\Http\Controllers\Api\V2\WishlistController@index')->middleware('auth:sanctum');
+    Route::get('wishlists-check-product', 'App\Http\Controllers\Api\V2\WishlistController@isProductInWishlist')->middleware(['auth:sanctum', 'unbanned']);
+    Route::get('wishlists-add-product', 'App\Http\Controllers\Api\V2\WishlistController@add')->middleware(['auth:sanctum', 'unbanned']);
+    Route::get('wishlists-remove-product', 'App\Http\Controllers\Api\V2\WishlistController@remove')->middleware(['auth:sanctum', 'unbanned']);
+    Route::get('wishlists', 'App\Http\Controllers\Api\V2\WishlistController@index')->middleware(['auth:sanctum', 'unbanned']);
     Route::apiResource('wishlists', 'App\Http\Controllers\Api\V2\WishlistController')->except(['index', 'update', 'show']);
 
     Route::get('policies/seller', 'App\Http\Controllers\Api\V2\PolicyController@sellerPolicy')->name('policies.seller');
@@ -142,20 +142,20 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function() {
     Route::get('policies/terms', 'App\Http\Controllers\Api\V2\PolicyController@termsPolicy')->name('policies.terms');
     Route::get('policies/privacy', 'App\Http\Controllers\Api\V2\PolicyController@privacyPolicy')->name('policies.privacy');
 
-    // Route::get('user/info/{id}', 'App\Http\Controllers\Api\V2\UserController@info')->middleware('auth:sanctum');
-    // Route::post('user/info/update', 'App\Http\Controllers\Api\V2\UserController@updateName')->middleware('auth:sanctum');
-    Route::get('user/shipping/address', 'App\Http\Controllers\Api\V2\AddressController@addresses')->middleware('auth:sanctum');
-    Route::post('user/shipping/create', 'App\Http\Controllers\Api\V2\AddressController@createShippingAddress')->middleware('auth:sanctum');
-    Route::post('user/shipping/update', 'App\Http\Controllers\Api\V2\AddressController@updateShippingAddress')->middleware('auth:sanctum');
-    Route::post('user/shipping/update-location', 'App\Http\Controllers\Api\V2\AddressController@updateShippingAddressLocation')->middleware('auth:sanctum');
-    Route::post('user/shipping/make_default', 'App\Http\Controllers\Api\V2\AddressController@makeShippingAddressDefault')->middleware('auth:sanctum');
-    Route::get('user/shipping/delete/{address_id}', 'App\Http\Controllers\Api\V2\AddressController@deleteShippingAddress')->middleware('auth:sanctum');
+    // Route::get('user/info/{id}', 'App\Http\Controllers\Api\V2\UserController@info')->middleware(['auth:sanctum', 'unbanned']);
+    // Route::post('user/info/update', 'App\Http\Controllers\Api\V2\UserController@updateName')->middleware(['auth:sanctum', 'unbanned']);
+    Route::get('user/shipping/address', 'App\Http\Controllers\Api\V2\AddressController@addresses')->middleware(['auth:sanctum', 'unbanned']);
+    Route::post('user/shipping/create', 'App\Http\Controllers\Api\V2\AddressController@createShippingAddress')->middleware(['auth:sanctum', 'unbanned']);
+    Route::post('user/shipping/update', 'App\Http\Controllers\Api\V2\AddressController@updateShippingAddress')->middleware(['auth:sanctum', 'unbanned']);
+    Route::post('user/shipping/update-location', 'App\Http\Controllers\Api\V2\AddressController@updateShippingAddressLocation')->middleware(['auth:sanctum', 'unbanned']);
+    Route::post('user/shipping/make_default', 'App\Http\Controllers\Api\V2\AddressController@makeShippingAddressDefault')->middleware(['auth:sanctum', 'unbanned']);
+    Route::get('user/shipping/delete/{address_id}', 'App\Http\Controllers\Api\V2\AddressController@deleteShippingAddress')->middleware(['auth:sanctum', 'unbanned']);
 
-    Route::get('clubpoint/get-list', 'App\Http\Controllers\Api\V2\ClubpointController@get_list')->middleware('auth:sanctum');
-    Route::post('clubpoint/convert-into-wallet', 'App\Http\Controllers\Api\V2\ClubpointController@convert_into_wallet')->middleware('auth:sanctum');
+    Route::get('clubpoint/get-list', 'App\Http\Controllers\Api\V2\ClubpointController@get_list')->middleware(['auth:sanctum', 'unbanned']);
+    Route::post('clubpoint/convert-into-wallet', 'App\Http\Controllers\Api\V2\ClubpointController@convert_into_wallet')->middleware(['auth:sanctum', 'unbanned']);
 
-    Route::get('refund-request/get-list', 'App\Http\Controllers\Api\V2\RefundRequestController@get_list')->middleware('auth:sanctum');
-    Route::post('refund-request/send', 'App\Http\Controllers\Api\V2\RefundRequestController@send')->middleware('auth:sanctum');
+    Route::get('refund-request/get-list', 'App\Http\Controllers\Api\V2\RefundRequestController@get_list')->middleware(['auth:sanctum', 'unbanned']);
+    Route::post('refund-request/send', 'App\Http\Controllers\Api\V2\RefundRequestController@send')->middleware(['auth:sanctum', 'unbanned']);
 
     Route::post('get-user-by-access_token', 'App\Http\Controllers\Api\V2\UserController@getUserInfoByAccessToken');
 
@@ -166,9 +166,9 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function() {
     Route::get('cities-by-state/{state_id}', 'App\Http\Controllers\Api\V2\AddressController@getCitiesByState');
     Route::get('states-by-country/{country_id}', 'App\Http\Controllers\Api\V2\AddressController@getStatesByCountry');
 
-    Route::post('shipping_cost', 'App\Http\Controllers\Api\V2\ShippingController@shipping_cost')->middleware('auth:sanctum');
+    Route::post('shipping_cost', 'App\Http\Controllers\Api\V2\ShippingController@shipping_cost')->middleware(['auth:sanctum', 'unbanned']);
 
-    // Route::post('coupon/apply', 'App\Http\Controllers\Api\V2\CouponController@apply')->middleware('auth:sanctum');
+    // Route::post('coupon/apply', 'App\Http\Controllers\Api\V2\CouponController@apply')->middleware(['auth:sanctum', 'unbanned']);
 
 
     Route::any('stripe', 'App\Http\Controllers\Api\V2\StripeController@stripe');
@@ -188,11 +188,14 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function() {
     Route::any('paystack/init', 'App\Http\Controllers\Api\V2\PaystackController@init')->name('api.paystack.init');
     Route::post('paystack/success', 'App\Http\Controllers\Api\V2\PaystackController@success')->name('api.paystack.success');
 
+    Route::any('foloosi/init', 'App\Http\Controllers\Api\V2\FoloosiController@init')->name('api.foloosi.init');
+    Route::post('foloosi/success', 'App\Http\Controllers\Api\V2\FoloosiController@success')->name('api.foloosi.success');
+
     Route::any('iyzico/init', 'App\Http\Controllers\Api\V2\IyzicoController@init')->name('api.iyzico.init');
     Route::any('iyzico/callback', 'App\Http\Controllers\Api\V2\IyzicoController@callback')->name('api.iyzico.callback');
     Route::post('iyzico/success', 'App\Http\Controllers\Api\V2\IyzicoController@success')->name('api.iyzico.success');
 
-    Route::get('bkash/begin', 'App\Http\Controllers\Api\V2\BkashController@begin')->middleware('auth:sanctum');
+    Route::get('bkash/begin', 'App\Http\Controllers\Api\V2\BkashController@begin')->middleware(['auth:sanctum', 'unbanned']);
     Route::get('bkash/api/webpage/{token}/{amount}', 'App\Http\Controllers\Api\V2\BkashController@webpage')->name('api.bkash.webpage');
     Route::any('bkash/api/checkout/{token}/{amount}', 'App\Http\Controllers\Api\V2\BkashController@checkout')->name('api.bkash.checkout');
     Route::any('bkash/api/execute/{token}', 'App\Http\Controllers\Api\V2\BkashController@execute')->name('api.bkash.execute');
@@ -200,7 +203,7 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function() {
     Route::any('bkash/api/success', 'App\Http\Controllers\Api\V2\BkashController@success')->name('api.bkash.success');
     Route::post('bkash/api/process', 'App\Http\Controllers\Api\V2\BkashController@process')->name('api.bkash.process');
 
-    Route::get('nagad/begin', 'App\Http\Controllers\Api\V2\NagadController@begin')->middleware('auth:sanctum');
+    Route::get('nagad/begin', 'App\Http\Controllers\Api\V2\NagadController@begin')->middleware(['auth:sanctum', 'unbanned']);
     Route::any('nagad/verify/{payment_type}', 'App\Http\Controllers\Api\V2\NagadController@verify')->name('app.nagad.callback_url');
     Route::post('nagad/process', 'App\Http\Controllers\Api\V2\NagadController@process');
 
@@ -215,25 +218,25 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function() {
     Route::any('paytm/payment/pay', 'App\Http\Controllers\Api\V2\PaytmController@pay')->name('api.paytm.pay');
     Route::any('paytm/payment/callback', 'App\Http\Controllers\Api\V2\PaytmController@callback')->name('api.paytm.callback');
 
-    Route::post('payments/pay/wallet', 'App\Http\Controllers\Api\V2\WalletController@processPayment')->middleware('auth:sanctum');
-    Route::post('payments/pay/cod', 'App\Http\Controllers\Api\V2\PaymentController@cashOnDelivery')->middleware('auth:sanctum');
-    Route::post('payments/pay/manual', 'App\Http\Controllers\Api\V2\PaymentController@manualPayment')->middleware('auth:sanctum');
+    Route::post('payments/pay/wallet', 'App\Http\Controllers\Api\V2\WalletController@processPayment')->middleware(['auth:sanctum', 'unbanned']);
+    Route::post('payments/pay/cod', 'App\Http\Controllers\Api\V2\PaymentController@cashOnDelivery')->middleware(['auth:sanctum', 'unbanned']);
+    Route::post('payments/pay/manual', 'App\Http\Controllers\Api\V2\PaymentController@manualPayment')->middleware(['auth:sanctum', 'unbanned']);
 
     Route::post('offline/payment/submit', 'App\Http\Controllers\Api\V2\OfflinePaymentController@submit')->name('api.offline.payment.submit');
 
-    Route::post('order/store', 'App\Http\Controllers\Api\V2\OrderController@store')->middleware('auth:sanctum');
-    Route::get('profile/counters', 'App\Http\Controllers\Api\V2\ProfileController@counters')->middleware('auth:sanctum');
-    Route::post('profile/update', 'App\Http\Controllers\Api\V2\ProfileController@update')->middleware('auth:sanctum');
-    Route::post('profile/update-device-token', 'App\Http\Controllers\Api\V2\ProfileController@update_device_token')->middleware('auth:sanctum');
-    Route::post('profile/update-image', 'App\Http\Controllers\Api\V2\ProfileController@updateImage')->middleware('auth:sanctum');
-    Route::post('profile/image-upload', 'App\Http\Controllers\Api\V2\ProfileController@imageUpload')->middleware('auth:sanctum');
-    Route::post('profile/check-phone-and-email', 'App\Http\Controllers\Api\V2\ProfileController@checkIfPhoneAndEmailAvailable')->middleware('auth:sanctum');
+    Route::post('order/store', 'App\Http\Controllers\Api\V2\OrderController@store')->middleware(['auth:sanctum', 'unbanned']);
+    Route::get('profile/counters', 'App\Http\Controllers\Api\V2\ProfileController@counters')->middleware(['auth:sanctum', 'unbanned']);
+    Route::post('profile/update', 'App\Http\Controllers\Api\V2\ProfileController@update')->middleware(['auth:sanctum', 'unbanned']);
+    Route::post('profile/update-device-token', 'App\Http\Controllers\Api\V2\ProfileController@update_device_token')->middleware(['auth:sanctum', 'unbanned']);
+    Route::post('profile/update-image', 'App\Http\Controllers\Api\V2\ProfileController@updateImage')->middleware(['auth:sanctum', 'unbanned']);
+    Route::post('profile/image-upload', 'App\Http\Controllers\Api\V2\ProfileController@imageUpload')->middleware(['auth:sanctum', 'unbanned']);
+    Route::post('profile/check-phone-and-email', 'App\Http\Controllers\Api\V2\ProfileController@checkIfPhoneAndEmailAvailable')->middleware(['auth:sanctum', 'unbanned']);
 
-    Route::post('file/image-upload', 'App\Http\Controllers\Api\V2\FileController@imageUpload')->middleware('auth:sanctum');
+    Route::post('file/image-upload', 'App\Http\Controllers\Api\V2\FileController@imageUpload')->middleware(['auth:sanctum', 'unbanned']);
 
-    Route::get('wallet/balance', 'App\Http\Controllers\Api\V2\WalletController@balance')->middleware('auth:sanctum');
-    Route::get('wallet/history', 'App\Http\Controllers\Api\V2\WalletController@walletRechargeHistory')->middleware('auth:sanctum');
-    Route::post('wallet/offline-recharge', 'App\Http\Controllers\Api\V2\WalletController@offline_recharge')->middleware('auth:sanctum');
+    Route::get('wallet/balance', 'App\Http\Controllers\Api\V2\WalletController@balance')->middleware(['auth:sanctum', 'unbanned']);
+    Route::get('wallet/history', 'App\Http\Controllers\Api\V2\WalletController@walletRechargeHistory')->middleware(['auth:sanctum', 'unbanned']);
+    Route::post('wallet/offline-recharge', 'App\Http\Controllers\Api\V2\WalletController@offline_recharge')->middleware(['auth:sanctum', 'unbanned']);
 
     Route::get('flash-deals', 'App\Http\Controllers\Api\V2\FlashDealController@index');
     Route::get('flash-deal-products/{id}', 'App\Http\Controllers\Api\V2\FlashDealController@products');

@@ -78,7 +78,7 @@ class DigitalProductController  extends Controller
 
         $product->description       = $request->description;
         $product->unit_price        = $request->unit_price;
-        $product->purchase_price    = $request->purchase_price;
+        $product->purchase_price    = $request->purchase_price?$request->purchase_price:$request->unit_price;
         $product->tax               = $request->tax;
         $product->tax_type          = $request->tax_type;
         $product->discount          = $request->discount;
@@ -161,7 +161,7 @@ class DigitalProductController  extends Controller
         $product->tags = implode(',', $tags);
 
         $product->unit_price        = $request->unit_price;
-        $product->purchase_price    = $request->purchase_price;
+        $product->purchase_price    = $request->purchase_price?$request->purchase_price:$request->unit_price;
         $product->tax               = $request->tax;
         $product->tax_type          = $request->tax_type;
         $product->discount          = $request->discount;

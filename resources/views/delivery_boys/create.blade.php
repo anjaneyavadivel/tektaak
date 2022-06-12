@@ -42,8 +42,9 @@
                     <label class="col-sm-2 col-from-label" for="phone">
                         {{translate('Phone')}} <span class="text-danger">*</span>
                     </label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" name="phone" value="{{ old('phone') }}" placeholder="Phone" required>
+                    <div class="col-sm-10 input-group-prepend">
+                        {{-- <span class="input-group-text">+971</span> --}}
+                        <input type="text" class="form-control" name="phone" value="{{ old('phone','+971') }}" placeholder="Phone" required>
                     </div>
                 </div>
                 <div class="form-group row">

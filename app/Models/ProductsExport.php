@@ -44,6 +44,7 @@ class ProductsExport implements FromCollection, WithMapping, WithHeadings
         foreach ($product->stocks as $key => $stock) {
             $qty += $stock->qty;
         }
+        $purchase_price = $product->purchase_price?$product->purchase_price:$product->unit_price;
         return [
             $product->name,
             $product->description,
@@ -54,7 +55,7 @@ class ProductsExport implements FromCollection, WithMapping, WithHeadings
             $product->video_provider,
             $product->video_link,
             $product->unit_price,
-            $product->purchase_price,
+            $purchase_price,
             $product->unit,
 //            $product->current_stock,
             $qty,
