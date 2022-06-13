@@ -123,6 +123,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
             Route::get('/category', 'pdf_download_category')->name('pdf.download_category');
             Route::get('/brand', 'pdf_download_brand')->name('pdf.download_brand');
             Route::get('/seller', 'pdf_download_seller')->name('pdf.download_seller');
+			Route::get('/attribute', 'pdf_download_attribute')->name('pdf.download_attribute');
+			Route::get('/color', 'pdf_download_color')->name('pdf.download_color');
         });
     });
     

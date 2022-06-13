@@ -8,6 +8,8 @@ use App\Models\Brand;
 use App\Models\User;
 use App\Models\ProductsImport;
 use App\Models\ProductsExport;
+use App\Models\Attribute;
+use App\Models\Color;
 use PDF;
 use Excel;
 use Auth;
@@ -46,8 +48,22 @@ class ProductBulkUploadController extends Controller
     public function pdf_download_brand()
     {
         $brands = Brand::all();
-
-        return PDF::loadView('backend.downloads.brand',[
+		return PDF::loadView('backend.downloads.brand',[
+            'brands' => $brands,
+        ], [], [])->download('brands.pdf');
+    }
+	
+	public function pdf_download_attribute()
+    {
+        $brands = Attribute::all();
+		return PDF::loadView('backend.downloads.attribute',[
+            'brands' => $brands,
+        ], [], [])->download('attribute.pdf');
+    }
+	public function pdf_download_color()
+    {
+        $brands = Color::all();
+		return PDF::loadView('backend.downloads.color',[
             'brands' => $brands,
         ], [], [])->download('brands.pdf');
     }

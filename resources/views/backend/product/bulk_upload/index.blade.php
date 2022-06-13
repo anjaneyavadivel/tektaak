@@ -29,6 +29,8 @@
             <div class="">
                 <a href="{{ route('pdf.download_category') }}"><button class="btn btn-info">{{translate('Download Category')}}</button></a>
                 <a href="{{ route('pdf.download_brand') }}"><button class="btn btn-info">{{translate('Download Brand')}}</button></a>
+				<a href="{{ route('pdf.download_attribute') }}"><button class="btn btn-info">{{translate('Attribute')}}</button></a>
+				<a href="{{ route('pdf.download_color') }}"><button class="btn btn-info">{{translate('Colors')}}</button></a>
             </div>
             <br>
         </div>
