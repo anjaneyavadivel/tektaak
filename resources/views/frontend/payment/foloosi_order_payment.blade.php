@@ -25,7 +25,7 @@ $shipping_address = (array)json_decode($combined_order['shipping_address']);
                 CURLOPT_TIMEOUT => 30,
                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                 CURLOPT_CUSTOMREQUEST => "POST",
-                CURLOPT_POSTFIELDS => "transaction_amount=".\App\Models\CombinedOrder::findOrFail($combined_order->id)->grand_total ."&currency=". \App\Models\Currency::findOrFail(get_setting('system_default_currency'))->code."&customer_address=".$shipping_address['address']."&customer_city=".$shipping_address['city']."&billing_country=".$shipping_address['country']."&billing_state=".$shipping_address['state']."&billing_postal_code=".$shipping_address['postal_code']."&customer_name=".$shipping_address['name']."&customer_email=".$shipping_address['email']."&customer_mobile=".$shipping_address['phone'],
+                CURLOPT_POSTFIELDS => "transaction_amount=".\App\Models\CombinedOrder::findOrFail($combined_order->id)->grand_total ."&currency=". \App\Models\Currency::findOrFail(get_setting('system_default_currency'))->code."&customer_address=".$shipping_address['address']."&customer_city=".$shipping_address['city']."&billing_country=".$shipping_address['country']."&billing_state=".$shipping_address['state']."&billing_postal_code=".$shipping_address['postal_code']."&customer_name=".$shipping_address['name']."&customer_email=".$shipping_address['email']."&customer_mobile=".$shipping_address['phone']."&site_return_url=http://lynk-konnect.co.uk/tek_v1/api/v2/foloosi/success",
                 CURLOPT_HTTPHEADER => array(
                     'content-type: application/x-www-form-urlencoded',
                     'merchant_key: '.env("FOLOOSI_MERCHANT_KEY")
@@ -48,7 +48,7 @@ $shipping_address = (array)json_decode($combined_order['shipping_address']);
             var options = {
                 "reference_token" : reference_token, 
                 "merchant_key" : '{{env("FOLOOSI_MERCHANT_KEY")}}',
-                "redirect" : false 
+                "redirect" : true 
             }
             var fp1 = new Foloosipay(options);
             fp1.open();

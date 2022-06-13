@@ -17,7 +17,7 @@
                 CURLOPT_TIMEOUT => 30,
                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                 CURLOPT_CUSTOMREQUEST => "POST",
-                CURLOPT_POSTFIELDS => "transaction_amount=".$amount ."&currency=".\App\Models\Currency::findOrFail(get_setting('system_default_currency'))->code."&customer_address=''&customer_city=''&billing_country=''&billing_state=''&billing_postal_code=''&customer_name=". $user->name ."&customer_email=".$user->email ."&customer_mobile=". $user->phone,
+                CURLOPT_POSTFIELDS => "transaction_amount=".$amount ."&currency=".\App\Models\Currency::findOrFail(get_setting('system_default_currency'))->code."&customer_address=''&customer_city=''&billing_country=''&billing_state=''&billing_postal_code=''&customer_name=". $user->name ."&customer_email=".$user->email ."&customer_mobile=". $user->phone."&site_return_url=http://lynk-konnect.co.uk/tek_v1/api/v2/foloosi/success",
                 CURLOPT_HTTPHEADER => array(
                     'content-type: application/x-www-form-urlencoded',
                     'merchant_key: '.env("FOLOOSI_MERCHANT_KEY")
@@ -40,7 +40,7 @@
             var options = {
                 "reference_token" : reference_token, 
                 "merchant_key" : '{{env("FOLOOSI_MERCHANT_KEY")}}',
-                "redirect" : false 
+                "redirect" : true 
             }
             var fp1 = new Foloosipay(options);
             fp1.open();
