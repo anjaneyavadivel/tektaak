@@ -245,18 +245,22 @@ class OrderController extends Controller
         if (Auth::user()->user_type == 'staff') {
             $order = Order::findOrFail(decrypt($id));
             $order_shipping_address = json_decode($order->shipping_address);
-            $delivery_boys = User::where('city', $order_shipping_address->city)
+			$delivery_boys = User::where('city', $order_shipping_address->city)
                 ->where('user_type', 'delivery_boy')
                 ->get();
 
             return view('backend.sales.pickup_point_orders.show', compact('order', 'delivery_boys'));
         } else {
+			
             $order = Order::findOrFail(decrypt($id));
+			//dd($order->shipping_address);
+			if(isset($order->shipping_address)){
             $order_shipping_address = json_decode($order->shipping_address);
+			
             $delivery_boys = User::where('city', $order_shipping_address->city)
                 ->where('user_type', 'delivery_boy')
                 ->get();
-
+			}
             return view('backend.sales.pickup_point_orders.show', compact('order', 'delivery_boys'));
         }
     }
