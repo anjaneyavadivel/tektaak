@@ -179,7 +179,6 @@ class DigitalProductController extends Controller
         $product->slug              = strtolower($request->slug);
 
         $product->file_name = $request->file;
-
         // Delete From Product Stock
         foreach ($product->stocks as $key => $stock) {
             $stock->delete();

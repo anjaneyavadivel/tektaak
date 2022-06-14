@@ -203,7 +203,7 @@ class ProductController extends Controller
                 break;
         }
 
-        return new ProductMiniCollection(filter_products($products)->paginate(10));
+        return new ProductMiniCollection(filter_products_api($products,$sort_by)->paginate(10));
     }
 
     public function variantPrice(Request $request)
