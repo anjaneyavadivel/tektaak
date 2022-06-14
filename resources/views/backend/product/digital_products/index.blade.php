@@ -70,9 +70,10 @@
             @endif
 			
 			
+        </div>
 			
 			</form>
-        </div>
+    </div>
         <div class="card-body">
             <table class="table aiz-table mb-0">
                 <thead>
