@@ -135,6 +135,11 @@
     <script type="text/javascript">
         function add_new_address(){
             // Try HTML5 geolocation.
+            var infowindow = new google.maps.InfoWindow();
+            var map = new google.maps.Map(document.getElementById('map'), {
+                        center: {lat: -33.8688, lng: 151.2195},
+                        zoom: 13
+                    });
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {

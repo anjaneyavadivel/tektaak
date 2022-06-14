@@ -27,6 +27,17 @@ class ProductFlashDealService
             $product->discount_start_date = $flash_deal->start_date;
             $product->discount_end_date   = $flash_deal->end_date;
             $product->save();
+
+                
+            $discount_amount = $product->unit_price;
+            if($collection['flash_discount'] && $collection['flash_discount_type']=='amount'){
+                $discount_amount = $product->unit_price - $collection['flash_discount'];
+            }else if($collection['flash_discount'] && $collection['flash_discount_type']=='percent'){
+                $discount_amount = ($collection['flash_discount'] / 100) * ($product->unit_price > 0 ? $product->unit_price : 1);
+            }
+
+            $product->update(['purchase_price'=>$discount_amount]);
+           
         }
 
     }

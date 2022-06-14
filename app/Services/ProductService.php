@@ -147,7 +147,6 @@ class ProductService
     public function update(array $data, Product $product)
     {
         $collection = collect($data);
-
         $slug = Str::slug($collection['name']);
         $slug = $collection['slug'] ? Str::slug($collection['slug']) : Str::slug($collection['name']);
         $same_slug_count = Product::where('slug', 'LIKE', $slug . '%')->count();
@@ -254,7 +253,14 @@ class ProductService
         } else {
             $attributes = json_encode(array());
         }
+        $discount_amount = $collection['unit_price'];
 
+        if($collection['discount'] && $collection['discount_type']=='amount'){
+            $discount_amount = $collection['unit_price'] - $collection['discount'];
+        }else if($collection['discount'] && $collection['discount_type']=='percent'){
+            $discount_amount = ($collection['discount'] / 100) * ($collection['unit_price'] > 0 ? $collection['unit_price'] : 1);
+        }
+        $collection['purchase_price'] = $discount_amount;
         unset($collection['button']);
 
         $data = $collection->merge(compact(
@@ -266,6 +272,8 @@ class ProductService
             'choice_options',
             'attributes',
         ))->toArray();
+        
+        
         $product->update($data);
 
         return $product;
