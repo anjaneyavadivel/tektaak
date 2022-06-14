@@ -14,16 +14,64 @@
 <div class="col-lg-12">
     <div class="card">
         <div class="card-header row gutters-5">
-            <div class="col text-center text-md-left">
-                <h5 class="mb-md-0 h6">{{ translate('Digital Products') }}</h5>
+		 <form class="" id="sort_digital_products" action="" method="GET">
+		 <div class="row">
+            <div class="">
+                <h5 class="">{{ translate('Digital Products') }}</h5>
+            </div>
+			<?php /* <div class="dropdown mb-2 mb-md-3">
+                <button class="btn border dropdown-toggle" type="button" data-toggle="dropdown">
+                    {{translate('Bulk Action')}}
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="#" onclick="bulk_delete()"> {{translate('Delete selection')}}</a>
+                </div>
+            </div> */ ?>
+			
+			 <div class="col-lg-4">
+                <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0" name="type" id="type" onchange="sort_digital_products()">
+                    <option value="">{{ translate('Sort By') }}</option>
+                    <option value="rating,desc" @isset($col_name , $query) @if($col_name == 'rating' && $query == 'desc') selected @endif @endisset>{{translate('Rating (High > Low)')}}</option>
+                    <option value="rating,asc" @isset($col_name , $query) @if($col_name == 'rating' && $query == 'asc') selected @endif @endisset>{{translate('Rating (Low > High)')}}</option>
+                    <option value="num_of_sale,desc"@isset($col_name , $query) @if($col_name == 'num_of_sale' && $query == 'desc') selected @endif @endisset>{{translate('Num of Sale (High > Low)')}}</option>
+                    <option value="num_of_sale,asc"@isset($col_name , $query) @if($col_name == 'num_of_sale' && $query == 'asc') selected @endif @endisset>{{translate('Num of Sale (Low > High)')}}</option>
+                    <option value="unit_price,desc"@isset($col_name , $query) @if($col_name == 'unit_price' && $query == 'desc') selected @endif @endisset>{{translate('Base Price (High > Low)')}}</option>
+                    <option value="unit_price,asc"@isset($col_name , $query) @if($col_name == 'unit_price' && $query == 'asc') selected @endif @endisset>{{translate('Base Price (Low > High)')}}</option>
+                </select>
             </div>
             <div class="col-md-4">
-                <form class="" id="sort_digital_products" action="" method="GET">
+                <?php /* <form class="" id="sort_digital_products" action="" method="GET"> */ ?>
                     <div class="input-group input-group-sm">
                         <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Type name & Enter') }}">
                     </div>
-                </form>
+                
             </div>
+			@if($type == 'Seller')
+            <div class="col-md-3 ml-auto">
+                <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0" id="user_id" name="user_id" onchange="sort_digital_products()">
+                    <option value="">{{ translate('All Sellers') }}</option>
+                    @foreach (App\Models\User::where('user_type', '=', 'seller')->get() as $key => $seller)
+                        <option value="{{ $seller->id }}" @if ($seller->id == $seller_id) selected @endif>
+                            {{ $seller->shop->name ?? '' }} ({{ $seller->name?? '' }})
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            @endif
+            @if($type == 'All')
+            <div class="col-md-3 ml-auto">
+                <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0" id="user_id" name="user_id" onchange="sort_digital_products()">
+                    <option value="">{{ translate('All Sellers') }}</option>
+                        @foreach (App\Models\User::where('user_type', '=', 'admin')->orWhere('user_type', '=', 'seller')->get() as $key => $seller)
+                            <option value="{{ $seller->id }}" @if ($seller->id == $seller_id) selected @endif>{{ $seller->name }}</option>
+                        @endforeach
+                </select>
+            </div>
+            @endif
+			
+			
+			
+			</form>
         </div>
         <div class="card-body">
             <table class="table aiz-table mb-0">
@@ -98,7 +146,9 @@
 
 @section('script')
     <script type="text/javascript">
-
+ function sort_digital_products(el){
+            $('#sort_digital_products').submit();
+        }
         $(document).ready(function(){
             //$('#container').removeClass('mainnav-lg').addClass('mainnav-sm');
         });

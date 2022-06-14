@@ -19,14 +19,27 @@ class DigitalProductController extends Controller
      */
     public function index(Request $request)
     {
+		
         $sort_search    = null;
-        $products       = Product::orderBy('created_at', 'desc');
+         $col_name = null;
+        $query = null;
+        //$products       = Product::orderBy('created_at', 'desc');
+		$products = Product::where('added_by', 'admin')->where('auction_product', 0)->where('wholesale_product', 0);
         if ($request->has('search')){
             $sort_search    = $request->search;
             $products       = $products->where('name', 'like', '%'.$sort_search.'%');
         }
+		$type = null;
+		//dd($request->type);
+		if ($request->type != null) {
+            $var = explode(",", $request->type);
+            $col_name = $var[0];
+            $query = $var[1];
+            $products = $products->orderBy($col_name, $query);
+            $sort_type = $request->type;
+        }
         $products = $products->where('digital', 1)->paginate(10);
-        return view('backend.product.digital_products.index', compact('products','sort_search'));
+        return view('backend.product.digital_products.index', compact('products','sort_search','type','col_name', 'query',));
     }
 
     /**
