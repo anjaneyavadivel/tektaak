@@ -38,6 +38,7 @@
                             <select class="form-control aiz-selectpicker" onchange="change_status()" data-minimum-results-for-search="Infinity" id="update_delivery_status">
                                 <option value="pending">{{translate('Pending')}}</option>
                                 <option value="confirmed">{{translate('Confirmed')}}</option>
+                                <option value="assigned">{{translate('Assigned')}}</option>
                                 <option value="picked_up">{{translate('Picked Up')}}</option>
                                 <option value="on_the_way">{{translate('On The Way')}}</option>
                                 <option value="delivered">{{translate('Delivered')}}</option>
@@ -57,6 +58,7 @@
                     <option value="">{{translate('Filter by Delivery Status')}}</option>
                     <option value="pending" @if ($delivery_status == 'pending') selected @endif>{{translate('Pending')}}</option>
                     <option value="confirmed" @if ($delivery_status == 'confirmed') selected @endif>{{translate('Confirmed')}}</option>
+                    <option value="assigned" @if ($delivery_status == 'assigned') selected @endif>{{translate('Assigned')}}</option>
                     <option value="picked_up" @if ($delivery_status == 'picked_up') selected @endif>{{translate('Picked Up')}}</option>
                     <option value="on_the_way" @if ($delivery_status == 'on_the_way') selected @endif>{{translate('On The Way')}}</option>
                     <option value="delivered" @if ($delivery_status == 'delivered') selected @endif>{{translate('Delivered')}}</option>

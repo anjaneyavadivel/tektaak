@@ -79,6 +79,9 @@ class DeliveryBoyController extends Controller
         })->orWhere(function ($order_query) {
             $order_query->where('delivery_status', 'confirmed')
                     ->where('cancel_request', '0');
+        })->orWhere(function ($order_query) {
+            $order_query->where('delivery_status', 'assigned')
+                    ->where('cancel_request', '0');
         });
 
         return new DeliveryBoyPurchaseHistoryMiniCollection($order_query->latest('delivery_history_date')->paginate(10));
@@ -384,12 +387,13 @@ class DeliveryBoyController extends Controller
         ]);
     }
 
-    public function cancel_request($id)
+    public function cancel_request(Request $request,$id)
     {
         $order =  Order::find($id);
 
         $order->cancel_request = 1;
         $order->cancel_request_at = date('Y-m-d H:i:s');
+        $order->cancel_notes = $request->cancel_notes??'';
         $order->save();
 
         return response()->json([

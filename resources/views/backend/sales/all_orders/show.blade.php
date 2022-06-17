@@ -47,6 +47,7 @@
                     <select class="form-control aiz-selectpicker"  data-minimum-results-for-search="Infinity" id="update_delivery_status">
                         <option value="pending" @if ($delivery_status == 'pending') selected @endif>{{translate('Pending')}}</option>
                         <option value="confirmed" @if ($delivery_status == 'confirmed') selected @endif>{{translate('Confirmed')}}</option>
+                        <option value="assigned" @if ($delivery_status == 'assigned') selected @endif>{{translate('Assigned')}}</option>
                         <option value="picked_up" @if ($delivery_status == 'picked_up') selected @endif>{{translate('Picked Up')}}</option>
                         <option value="on_the_way" @if ($delivery_status == 'on_the_way') selected @endif>{{translate('On The Way')}}</option>
                         <option value="delivered" @if ($delivery_status == 'delivered') selected @endif>{{translate('Delivered')}}</option>
@@ -83,6 +84,7 @@
                 <br>
                 <a href="{{ uploaded_asset(json_decode($order->manual_payment_data)->photo) }}" target="_blank"><img src="{{ uploaded_asset(json_decode($order->manual_payment_data)->photo) }}" alt="" height="100"></a>
                 @endif
+
             </div>
             <div class="col-md-4 ml-auto">
                 <table>
@@ -96,11 +98,14 @@
                             <td class="text-right">
                                 @if($delivery_status == 'delivered')
                                 <span class="badge badge-inline badge-success">{{ translate(ucfirst(str_replace('_', ' ', $delivery_status))) }}</span>
+                                @elseif($delivery_status == 'cancelled')
+                                <span class="badge badge-inline badge-danger">{{ translate(ucfirst(str_replace('_', ' ', $delivery_status))) }}</span>
                                 @else
                                 <span class="badge badge-inline badge-info">{{ translate(ucfirst(str_replace('_', ' ', $delivery_status))) }}</span>
                                 @endif
                             </td>
                         </tr>
+                       
                         <tr>
                             <td class="text-main text-bold">{{translate('Order Date')}}	</td>
                             <td class="text-right">{{ date('d-m-Y h:i A', $order->date) }}</td>
@@ -119,6 +124,12 @@
                         </tr>
                     </tbody>
                 </table>
+                
+                @if($delivery_status == 'cancelled')<br>
+                <h6 class="text-danger text-bold">{{translate('Cancel Request Notes')}}</h6>
+                    <p class="text-danger text-bold">{{ $order->cancel_notes }}</p>
+                </tr>
+                @endif
             </div>
         </div>
         <hr class="new-section-sm bord-no">
