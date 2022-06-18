@@ -31,14 +31,28 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithValidation, To
                 flash(translate('Please upgrade your package.'))->warning();
             }
         }
-        
+        //dd($rows);
         if($canImport) {
             foreach ($rows as $row) {
 				$approved = 1;
 				if($user->user_type == 'seller' && get_setting('product_approve_by_admin') == 1) {
 					$approved = 0;
 				}
-				
+                if($row['colors'] != ''){
+                    $colors= $row['colors'];
+                }else{
+                    $colors=json_encode(array());
+                }
+                if($row['attributes'] != ''){
+                    $attributes= $row['attributes'];
+                }else{
+                    $attributes=json_encode(array());
+                }
+				if($row['choice_options'] != ''){
+                    $choice_options= $row['choice_options'];
+                }else{
+                    $choice_options=json_encode(array());
+                }
                 $productId = Product::create([
                             'name' => $row['name'],
                             'description' => $row['description'],
@@ -55,8 +69,11 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithValidation, To
                             'unit' => $row['unit'],
                             'meta_title' => $row['meta_title'],
                             'meta_description' => $row['meta_description'],
-                            'colors' => json_encode(array()),
-                            'choice_options' => json_encode(array()),
+                            //'colors' => json_encode(array()),
+                            'colors' => $colors,
+                            'attributes' => $attributes,
+                            'choice_options' => $choice_options,
+                            //'choice_options' => json_encode(array()),
                             'variations' => json_encode(array()),
                             'slug' => preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', strtolower($row['slug']))) . '-' . Str::random(5),
                             'thumbnail_img' => $this->downloadThumbnail($row['thumbnail_img']),

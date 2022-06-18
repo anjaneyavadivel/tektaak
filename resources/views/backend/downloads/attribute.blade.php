@@ -78,8 +78,9 @@
 		<table class="padding text-left small border-bottom">
 			<thead>
                 <tr class="gry-color" style="background: #eceff4;">
-                    <th width="50%">{{translate('Brand Name') }}</th>
-                    <th width="50%">{{translate('ID') }}</th>
+                    <th width="33%">{{translate('Attribute Name') }}</th>
+                    <th width="33%">{{translate('ID') }}</th>
+					<th class="text-right">{{ translate('Options')}}</th>
                 </tr>
 			</thead>
 			<tbody class="strong">
@@ -87,6 +88,11 @@
 	                <tr class="">
 						<td>{{ $brand->getTranslation('name') }}</td>
 						<td>{{ $brand->id }}</td>
+						<td>
+							@foreach($brand->attribute_values as $key => $value)
+							<span class="badge badge-inline badge-md bg-soft-dark">{{ $value->value }},</span>
+							@endforeach
+						</td>
 					</tr>
 				@endforeach
             </tbody>

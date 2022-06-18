@@ -42,7 +42,6 @@
                 </tr>
             </thead>
             <tbody>
-			<?php dd($pickup_points); exit; ?>
                 @foreach($pickup_points as $key => $pickup_point)
                     <tr>
 						<td>{{ ($key+1) + ($pickup_points->currentPage() - 1)*$pickup_points->perPage() }}</td>
