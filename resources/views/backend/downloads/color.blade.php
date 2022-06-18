@@ -78,14 +78,16 @@
 		<table class="padding text-left small border-bottom">
 			<thead>
                 <tr class="gry-color" style="background: #eceff4;">
-                    <th width="50%">{{translate('Brand Name') }}</th>
-                    <th width="50%">{{translate('ID') }}</th>
+                    <th width="33%">{{translate('Brand Name') }}</th>
+                    <th width="33%">{{translate('Code') }}</th>
+                    <th width="33%">{{translate('ID') }}</th>
                 </tr>
 			</thead>
 			<tbody class="strong">
-                @foreach ($brands as $key => $brand)
+                @foreach ($colors as $key => $brand)
 	                <tr class="">
-						<td>{{ $brand->getTranslation('name') }}</td>
+						<td>{{ $brand->name }}</td>
+						<td>{{ $brand->code }}</td>
 						<td>{{ $brand->id }}</td>
 					</tr>
 				@endforeach

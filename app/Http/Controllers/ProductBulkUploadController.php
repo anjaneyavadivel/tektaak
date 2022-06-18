@@ -33,7 +33,7 @@ class ProductBulkUploadController extends Controller
     }
 
     public function export(){
-        return Excel::download(new ProductsExport, 'products.xlsx');
+		return Excel::download(new ProductsExport, 'products.xlsx');
     }
 
     public function pdf_download_category()
@@ -55,17 +55,18 @@ class ProductBulkUploadController extends Controller
 	
 	public function pdf_download_attribute()
     {
-        $brands = Attribute::all();
+        //$brands = Attribute::all();
+		 $brands = Attribute::orderBy('created_at', 'desc')->get();
 		return PDF::loadView('backend.downloads.attribute',[
             'brands' => $brands,
         ], [], [])->download('attribute.pdf');
     }
 	public function pdf_download_color()
     {
-        $brands = Color::all();
+        $colors = Color::all();
 		return PDF::loadView('backend.downloads.color',[
-            'brands' => $brands,
-        ], [], [])->download('brands.pdf');
+            'colors' => $colors,
+        ], [], [])->download('colors.pdf');
     }
 
     public function pdf_download_seller()
@@ -82,7 +83,7 @@ class ProductBulkUploadController extends Controller
     {
         if($request->hasFile('bulk_file')){
             $import = new ProductsImport;
-            Excel::import($import, request()->file('bulk_file'));
+			Excel::import($import, request()->file('bulk_file'));
         }
         
         return back();
