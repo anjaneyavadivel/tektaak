@@ -47,11 +47,12 @@ class PurchaseHistoryController extends Controller
         return new PurchaseHistoryItemsCollection($order_query->get());
     }
     
-    public function order_cancel($id)
+    public function order_cancel(Request $request,$id)
     {
         $order = Order::where('id', $id)->where('user_id', auth()->user()->id)->first();
         if($order && ($order->delivery_status == 'pending' && $order->payment_status == 'unpaid')) {
             $order->delivery_status = 'cancelled';
+            $order->cancel_notes = $request->cancel_notes??'';
             $order->save();
 
             return response()->json([
@@ -61,7 +62,7 @@ class PurchaseHistoryController extends Controller
         } else {            
             return response()->json([
                 'result' => false,
-                'message' => translate('Something went wrong')
+                'message' => translate('Sorry! Your order inprogress, Please contact seller')
             ]);
         }
 

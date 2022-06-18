@@ -34,6 +34,7 @@ class AddressController extends Controller
 
         return response()->json([
             'result' => true,
+            'data'=> $address,
             'message' => translate('Shipping information has been added successfully')
         ]);
     }

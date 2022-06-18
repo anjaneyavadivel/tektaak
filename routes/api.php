@@ -82,6 +82,7 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language', 'unbanned']], f
     Route::get('purchase-history-details/{id}', 'App\Http\Controllers\Api\V2\PurchaseHistoryController@details')->middleware(['auth:sanctum', 'unbanned']);
     Route::get('purchase-history-items/{id}', 'App\Http\Controllers\Api\V2\PurchaseHistoryController@items')->middleware(['auth:sanctum', 'unbanned']);
     Route::get('order-cancel/{id}', 'App\Http\Controllers\Api\V2\PurchaseHistoryController@order_cancel')->middleware(['auth:sanctum', 'unbanned']);
+    Route::post('order-cancel/{id}', 'App\Http\Controllers\Api\V2\PurchaseHistoryController@order_cancel')->middleware(['auth:sanctum', 'unbanned']);
 
     Route::get('filter/categories', 'App\Http\Controllers\Api\V2\FilterController@categories');
     Route::get('filter/brands', 'App\Http\Controllers\Api\V2\FilterController@brands');
