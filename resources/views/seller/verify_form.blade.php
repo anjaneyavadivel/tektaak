@@ -21,19 +21,28 @@
             @endphp
             <div class="card-body">
                 @foreach (json_decode($verification_form) as $key => $element)
-                    @if ($element->type == 'text')
+                @php
+                    $title ='';
+                    if(strpos("$element->label","<br>")){
+                    $title = substr($element->label, 0, strpos("$element->label","<br>"));
+                    }
+                @endphp
+                @if ($title!='')
+                    <h5>{{$title}}</h5>
+                @endif
+                @if ($element->type == 'text')
+                <div class="row">
+                    <div class="col-md-2">
+                        <label>{!! str_ireplace($title."<br>","",$element->label) !!} <span class="text-danger">*</span></label>
+                    </div>
+                    <div class="col-md-10">
+                        <input type="{{ $element->type }}" class="form-control mb-3" placeholder="{!! str_ireplace($title."<br>","",$element->label) !!}" name="element_{{ $key }}" required>
+                    </div>
+                </div>
+                @elseif($element->type == 'file')
                         <div class="row">
                             <div class="col-md-2">
-                                <label>{{ $element->label }} <span class="text-danger">*</span></label>
-                            </div>
-                            <div class="col-md-10">
-                                <input type="{{ $element->type }}" class="form-control mb-3" placeholder="{{ $element->label }}" name="element_{{ $key }}" required>
-                            </div>
-                        </div>
-                    @elseif($element->type == 'file')
-                        <div class="row">
-                            <div class="col-md-2">
-                                <label>{{ $element->label }}</label>
+                                <label>{!! str_ireplace($title."<br>","",$element->label) !!} <span class="text-danger">*</span></label>
                             </div>
                             <div class="col-md-10">
                                 <div class="custom-file">
@@ -47,7 +56,7 @@
                     @elseif ($element->type == 'select' && is_array(json_decode($element->options)))
                         <div class="row">
                             <div class="col-md-2">
-                                <label>{{ $element->label }}</label>
+                                <label>{!! str_ireplace($title."<br>","",$element->label) !!} <span class="text-danger">*</span></label>
                             </div>
                             <div class="col-md-10">
                                 <div class="mb-3">
@@ -62,7 +71,7 @@
                     @elseif ($element->type == 'multi_select' && is_array(json_decode($element->options)))
                         <div class="row">
                             <div class="col-md-2">
-                                <label>{{ $element->label }}</label>
+                                <label>{!! str_ireplace($title."<br>","",$element->label) !!} <span class="text-danger">*</span></label>
                             </div>
                             <div class="col-md-10">
                                 <div class="mb-3">
@@ -77,7 +86,7 @@
                     @elseif ($element->type == 'radio')
                         <div class="row">
                             <div class="col-md-2">
-                                <label>{{ $element->label }}</label>
+                                <label>{!! str_ireplace($title."<br>","",$element->label) !!} <span class="text-danger">*</span></label>
                             </div>
                             <div class="col-md-10">
                                 <div class="mb-3">

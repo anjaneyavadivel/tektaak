@@ -55,7 +55,7 @@
                         </tr>
                         <tr>
                             <td class="w-50 fw-600">{{ translate('Customer')}}:</td>
-                            <td>{{ json_decode($order->shipping_address)->name }}</td>
+                            <td>{{ json_decode($order->shipping_address)->name??'' }}</td>
                         </tr>
                         <tr>
                             <td class="w-50 fw-600">{{ translate('Email')}}:</td>

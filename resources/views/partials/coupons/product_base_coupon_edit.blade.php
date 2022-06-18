@@ -40,11 +40,11 @@
 
 <div class="form-group row">
    <label class="col-lg-3 col-from-label">{{translate('Discount')}}</label>
-   <div class="col-lg-7">
+   <div class="col-lg-4">
        <input type="number" lang="en" min="0" step="0.01" placeholder="{{translate('Discount')}}" value="{{ $coupon->discount }}" name="discount" class="form-control" required>
 
    </div>
-   <div class="col-lg-2">
+   <div class="col-lg-5">
        <select class="form-control aiz-selectpicker" name="discount_type">
            <option value="amount" @if ($coupon->discount_type == 'amount') selected  @endif>{{translate('Amount')}}</option>
            <option value="percent" @if ($coupon->discount_type == 'percent') selected  @endif>{{translate('Percent')}}</option>

@@ -47,7 +47,7 @@
               <tbody>
                   @foreach (json_decode($shop->verification_info) as $key => $info)
                       <tr>
-                          <th class="text-muted">{{ $info->label }}</th>
+                          <th class="text-muted">{!! $info->label !!}</th>
                           @if ($info->type == 'text' || $info->type == 'select' || $info->type == 'radio')
                               <td>{{ $info->value }}</td>
                           @elseif ($info->type == 'multi_select')
