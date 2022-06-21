@@ -271,6 +271,11 @@
                                     </a>
                                 </li>
                                 <li class="aiz-side-nav-item">
+                                    <a href="{{route('delivery-boys-assigned-order')}}" class="aiz-side-nav-link">
+                                        <span class="aiz-side-nav-text">{{translate('Assigned Order')}}</span>
+                                    </a>
+                                </li>
+                                <li class="aiz-side-nav-item">
                                     <a href="{{route('delivery-boys-payment-histories')}}" class="aiz-side-nav-link">
                                         <span class="aiz-side-nav-text">{{translate('Payment Histories')}}</span>
                                     </a>

@@ -14,6 +14,9 @@ use App\Models\DeliveryBoyPayment;
 use App\Models\DeliveryBoyCollection;
 use App\Models\Order;
 use App\Models\User;
+use DB;
+use Mail;
+use App\Mail\EmailManager;
 
 
 class DeliveryBoyController extends Controller
@@ -94,6 +97,21 @@ class DeliveryBoyController extends Controller
         $delivery_boy->user_id = $user->id;
         $delivery_boy->save();
         
+        $array['view'] = 'emails.newsletter';
+        $array['subject'] = 'Welcome to '.env('APP_NAME');
+        $array['from'] = env('MAIL_FROM_ADDRESS');
+        $content = 'Hi '.$request->name.'! You have Successfully Registered as Delivery Boy from '.env('APP_NAME');
+        $content .= '<br>Your User Name: '.$request->email;
+        $content .= '<br>Your Password: '.$request->password;
+        $content .= '<br>Website: '.env('APP_URL');
+        $array['content'] = $content;
+        try {
+            Mail::to($request->email)->queue(new EmailManager($array));
+        } catch (\Exception $e) {
+          // dd($e);
+        }
+
+
         flash(translate('Delivery Boy has been created successfully'))->success();
         return redirect()->route('delivery-boys.index');
     }
@@ -523,5 +541,57 @@ class DeliveryBoyController extends Controller
         $delivery_history->save();
         
     }
+    
+    public function delivery_boys_assigned_order(Request $request)
+    {
+        
+        $payment_status = null;
+        $delivery_status = null;
+        $sort_search = null;
+        // $delivery_boys = DeliveryBoy::orderBy('created_at', 'desc');
+        
+        // if ($request->has('search')){
+        //     $sort_search = $request->search;
+        //     $user_ids = User::where('user_type', 'delivery_boy')->where(function($user) use ($sort_search){
+        //         $user->where('name', 'like', '%'.$sort_search.'%')
+        //              ->orWhere('email', 'like', '%'.$sort_search.'%');
+        //     })->pluck('id')->toArray();
+        //     // $delivery_boys = $delivery_boys->where(function($delivery_boy) use ($user_ids){
+        //     //     $delivery_boy->whereIn('user_id', $user_ids);
+        //     // });
+        // }
+        
+        // $delivery_boys = $delivery_boys->paginate(15);
+        $orders = DB::table('orders')
+            ->orderBy('orders.id', 'desc')
+            ->join('delivery_boys', 'orders.assign_delivery_boy', '=', 'delivery_boys.user_id')
+            ->join('users', 'delivery_boys.user_id', '=', 'users.id')
+            ->where('seller_id', Auth::user()->id)
+            ->select('orders.id')
+            ->distinct();
+       
+        if ($request->payment_status != null) {
+            $orders = $orders->where('payment_status', $request->payment_status);
+            $payment_status = $request->payment_status;
+        }
+        if ($request->delivery_status != null) {
+            $orders = $orders->where('delivery_status', $request->delivery_status);
+            $delivery_status = $request->delivery_status;
+        }
+        if ($request->has('search')) {
+            $sort_search = $request->search;
+            $orders = $orders->where('code', 'like', '%' . $sort_search . '%')
+            ->where(function($order) use ($sort_search){
+                $order->where('users.name', 'like', '%'.$sort_search.'%')->orWhere('users.email', 'like', '%'.$sort_search.'%');
+            });
+        }
+
+        $orders = $orders->paginate(15);
+
+        return view('delivery_boys.delivery_boys_assigned_order_list', compact('orders', 'payment_status', 'delivery_status', 'sort_search'));
+
+        //return view('delivery_boys.delivery_boys_assigned_order_list', compact('delivery_boys', 'sort_search'));
+    }
+
 
 }

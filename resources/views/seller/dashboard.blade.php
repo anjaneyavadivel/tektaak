@@ -541,6 +541,7 @@
             </div>
             <div class="aiz-carousel gutters-10 half-outside-arrow" data-items="6" data-xl-items="5" data-lg-items="4"
                 data-md-items="3" data-sm-items="2" data-arrows='true'>
+                @if (isset($products))
                 @foreach ($products as $key => $product)
                     <div class="carousel-box">
                         <div
@@ -572,6 +573,8 @@
                         </div>
                     </div>
                 @endforeach
+                    
+                @endif
             </div>
         </div>
     </div>

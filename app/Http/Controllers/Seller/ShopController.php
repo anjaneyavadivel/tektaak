@@ -6,6 +6,8 @@ use App\Models\BusinessSetting;
 use Illuminate\Http\Request;
 use App\Models\Shop;
 use Auth;
+use Mail;
+use App\Mail\EmailManager;
 
 class ShopController extends Controller
 {
@@ -102,8 +104,19 @@ class ShopController extends Controller
         $shop = Auth::user()->shop;
         $shop->verification_info = json_encode($data);
         if ($shop->save()) {
+
+            $array['view'] = 'emails.newsletter';
+            $array['subject'] = 'New Shop Verification Request';
+            $array['from'] = env('MAIL_FROM_ADDRESS');
+            $array['content'] = 'Hi! You recieved a New Shop Verification Request from '.Auth::user()->name.'.';
+            try {
+                Mail::to(env('ADMIN_MAIL_ADDRESS'))->queue(new EmailManager($array));
+            } catch (\Exception $e) {
+              // dd($e);
+            }
+
             flash(translate('Your shop verification request has been submitted successfully!'))->success();
-            return redirect()->route('dashboard');
+            return redirect()->route('seller.dashboard');
         }
 
         flash(translate('Sorry! Something went wrong.'))->error();
