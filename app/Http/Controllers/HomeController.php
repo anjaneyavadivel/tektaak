@@ -561,7 +561,8 @@ class HomeController extends Controller
 
                 if(auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff')
                 {
-                    return redirect()->route('admin.dashboard');
+                    return redirect()->route('home');
+                    //return redirect()->route('admin.dashboard');
                 }
                 return redirect()->route('home');
             }

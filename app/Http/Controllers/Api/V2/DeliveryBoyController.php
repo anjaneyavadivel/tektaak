@@ -60,7 +60,16 @@ class DeliveryBoyController extends Controller
             'cancelled' => Order::where('assign_delivery_boy', $id)->where('delivery_status', 'cancelled')->count(),
             'on_the_way' => Order::where('assign_delivery_boy', $id)->where('delivery_status', 'on_the_way')->where('cancel_request', '0')->count(),
             'picked' => Order::where('assign_delivery_boy', $id)->where('delivery_status', 'picked_up')->where('cancel_request', '0')->count(),
-            'assigned' => Order::where('assign_delivery_boy', $id)->where('delivery_status', 'pending')->where('cancel_request', '0')->count(),
+            'assigned' => Order::where('assign_delivery_boy', $id)->where(function ($order_query) {
+                $order_query->where('delivery_status', 'pending')
+                        ->where('cancel_request', '0');
+            })->orWhere(function ($order_query) {
+                $order_query->where('delivery_status', 'confirmed')
+                        ->where('cancel_request', '0');
+            })->orWhere(function ($order_query) {
+                $order_query->where('delivery_status', 'assigned')
+                        ->where('cancel_request', '0');
+            })->count(),
 
         ]);
     }
