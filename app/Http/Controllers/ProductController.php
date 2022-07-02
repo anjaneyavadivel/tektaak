@@ -241,12 +241,10 @@ class ProductController extends Controller
     public function admin_product_edit(Request $request, $id)
     {
         CoreComponentRepository::initializeCache();
-
         $product = Product::findOrFail($id);
         if ($product->digital == 1) {
             return redirect('digitalproducts/' . $id . '/edit');
         }
-
         $lang = $request->lang;
         $tags = json_decode($product->tags);
         $categories = Category::where('parent_id', 0)
@@ -329,10 +327,8 @@ class ProductController extends Controller
         );
 
         flash(translate('Product has been updated successfully'))->success();
-
         Artisan::call('view:clear');
         Artisan::call('cache:clear');
-
         return back();
     }
 
@@ -345,19 +341,14 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
-
         $product->product_translations()->delete();
         $product->stocks()->delete();
         $product->taxes()->delete();
-
         if (Product::destroy($id)) {
             Cart::where('product_id', $id)->delete();
-
             flash(translate('Product has been deleted successfully'))->success();
-
             Artisan::call('view:clear');
             Artisan::call('cache:clear');
-
             return back();
         } else {
             flash(translate('Something went wrong'))->error();
